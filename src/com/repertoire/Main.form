@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.repertoire.Main">
+  <grid id="27dc6" binding="panel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="3f639" class="javax.swing.JButton" binding="btnSearch">
+        <constraints/>
+        <properties>
+          <text value="Rechercher"/>
+        </properties>
+      </component>
+      <component id="f26ac" class="javax.swing.JButton" binding="btnInsert">
+        <constraints/>
+        <properties>
+          <text value="Enregistrer"/>
+        </properties>
+      </component>
+      <component id="873f7" class="javax.swing.JButton" binding="btnModify">
+        <constraints/>
+        <properties>
+          <text value="Modifier"/>
+        </properties>
+      </component>
+      <component id="b875a" class="javax.swing.JButton" binding="btnDelete">
+        <constraints/>
+        <properties>
+          <text value="Supprimer"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

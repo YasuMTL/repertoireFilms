@@ -11,7 +11,7 @@ public class Main extends JFrame implements ActionListener {
     private JMenu menuSearch, menuInsert;
     private JPanel panel;
 
-    public Main() {
+    private Main() {
         window = new JFrame();
         JMenuBar menuBar = new JMenuBar();
         menuSearch = new JMenu("Rechercher");
@@ -50,6 +50,7 @@ public class Main extends JFrame implements ActionListener {
             JFrame frameTest = new JFrame("Test");
             frameTest.setContentPane(new Main().panel);
             frameTest.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frameTest.setLocation(400, 400);
             frameTest.pack();
             frameTest.setVisible(true);
         });

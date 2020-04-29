@@ -10,7 +10,6 @@ public class WindowInsert extends JFrame implements ActionListener {
     private JLabel etiqNoProduit, etiqDescript, etiqPrix;
     private JTextField champNoProduit, champDescript, champPrix;
     private JButton boutonTerminer;
-    //private DecimalFormat argent = new DecimalFormat("0.00 $");
 
     public WindowInsert(){
         Container c = getContentPane();

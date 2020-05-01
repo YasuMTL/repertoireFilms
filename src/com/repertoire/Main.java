@@ -4,12 +4,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 
 public class Main extends JFrame implements ActionListener {
     private JButton btnSearch, btnInsert, btnModify, btnDelete;
     private JFrame window;
     private JMenu menuSearch, menuInsert;
     private JPanel panel;
+
+    public static void main(String[] args){
+        EventQueue.invokeLater
+                (() -> {
+                    new Main().sqliteTest();
+
+                    JFrame frameTest = new JFrame("Test");
+                    frameTest.setContentPane(new Main().panel);
+                    frameTest.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    frameTest.setLocation(400, 400);
+                    frameTest.pack();
+                    frameTest.setVisible(true);
+                });
+    }
 
     private Main() {
         window = new JFrame();
@@ -44,15 +59,25 @@ public class Main extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] args){
-        EventQueue.invokeLater
-        (() -> {
-            JFrame frameTest = new JFrame("Test");
-            frameTest.setContentPane(new Main().panel);
-            frameTest.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frameTest.setLocation(400, 400);
-            frameTest.pack();
-            frameTest.setVisible(true);
-        });
+    private void sqliteTest(){
+        final String URL
+                = "jdbc:sqlite:C:\\Users\\Yasunari\\Desktop\\test.db";
+
+        Connection conn = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            conn = DriverManager.getConnection(URL);
+            System.out.println("接続成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -11,11 +11,26 @@ public class Main extends JFrame implements ActionListener {
     private JFrame window;
     private JMenu menuSearch, menuInsert;
     private JPanel panel;
+    private static SQLiteHelper SQLite;
+
+    public static void insert(){
+        String originalTitle = "testppp",
+                director = "Quidom",
+                secondTitle = "debug",
+                country = "Canada",
+                filePath = "C:\\Users\\Yasunari\\Desktop\\sql";
+        int year = 2000;
+        SQLite.insert(originalTitle, year, director, secondTitle, country, filePath);
+    }
 
     public static void main(String[] args){
         EventQueue.invokeLater
                 (() -> {
-                    new Main().sqliteTest();
+                    SQLite = new SQLiteHelper();
+                    SQLite.createNewDB("test_1.db");
+                    SQLite.createNewTable();
+                    insert();
+                    SQLite.selectAll();
 
                     JFrame frameTest = new JFrame("Test");
                     frameTest.setContentPane(new Main().panel);
@@ -56,28 +71,6 @@ public class Main extends JFrame implements ActionListener {
         }
         else if (e.getSource() == btnDelete){
             JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Supprimer\".", "ENREGISTRER", JOptionPane.PLAIN_MESSAGE);
-        }
-    }
-
-    private void sqliteTest(){
-        final String URL
-                = "jdbc:sqlite:C:\\Users\\Yasunari\\Desktop\\test.db";
-
-        Connection conn = null;
-        try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection(URL);
-            System.out.println("接続成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 }

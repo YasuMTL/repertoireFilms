@@ -4,14 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
+import java.io.IOException;
+
+import static com.repertoire.Read.readFile;
 
 public class Main extends JFrame implements ActionListener {
     private JButton btnSearch, btnInsert, btnModify, btnDelete;
     private JFrame window;
     private JMenu menuSearch, menuInsert;
     private JPanel panel;
-    private static SQLiteHelper SQLite;
+    public static SQLiteHelper SQLite;
 
     public static void insert(){
         String originalTitle = "testppp",
@@ -29,8 +31,13 @@ public class Main extends JFrame implements ActionListener {
                     SQLite = new SQLiteHelper();
                     SQLite.createNewDB("test_1.db");
                     SQLite.createNewTable();
-                    insert();
-                    SQLite.selectAll();
+                    //insert();
+                    /*try {
+                        readFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+                    //SQLite.selectAll();
 
                     JFrame frameTest = new JFrame("Test");
                     frameTest.setContentPane(new Main().panel);
@@ -45,7 +52,7 @@ public class Main extends JFrame implements ActionListener {
         window = new JFrame();
         JMenuBar menuBar = new JMenuBar();
         menuSearch = new JMenu("Rechercher");
-        menuInsert = new JMenu("Enregistrer");
+        menuInsert = new JMenu("Ajouter");
         menuBar.add(menuSearch);
         menuBar.add(menuInsert);
         window.setJMenuBar(menuBar);
@@ -64,7 +71,7 @@ public class Main extends JFrame implements ActionListener {
             WindowSearch windowSearch = new WindowSearch();
         }
         else if (e.getSource() == btnInsert){
-            JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Enregistrer\".", "ENREGISTRER", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Ajouter\".", "Ajouter", JOptionPane.PLAIN_MESSAGE);
         }
         else if (e.getSource() == btnModify){
             JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Modifier\".", "ENREGISTRER", JOptionPane.PLAIN_MESSAGE);

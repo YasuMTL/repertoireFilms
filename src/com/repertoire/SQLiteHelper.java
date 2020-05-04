@@ -1,6 +1,9 @@
 package com.repertoire;
 
+import javax.swing.*;
+import java.awt.*;
 import java.sql.*;
+import java.util.Vector;
 
 public class SQLiteHelper {
     private String URL;
@@ -39,11 +42,11 @@ public class SQLiteHelper {
         String sql = "CREATE TABLE IF NOT EXISTS films (\n"
                 + "	filmID integer PRIMARY KEY,\n"
                 + "	original_title text NOT NULL,\n"
-                + "	year integer NOT NULL,\n"
-                + "	director text NOT NULL,\n"
-                + "	second_title text NOT NULL,\n"
+                + "	year integer,\n"
+                + "	director text,\n"
+                + "	second_title text,\n"
                 + "	country text NOT NULL,\n"
-                + "	file_path text NOT NULL,\n"
+                + "	file_path text,\n"
                 + "	capacity real\n"
                 + ");";
 
@@ -88,6 +91,18 @@ public class SQLiteHelper {
 
     public void selectAll(){
         String sql = "SELECT * FROM films";
+        JTextArea result = new JTextArea();
+        JScrollPane scrollPane = new JScrollPane(result);
+        result.setLineWrap(true);
+        result.setWrapStyleWord(true);
+        scrollPane.setPreferredSize( new Dimension( 900, 500 ) );
+        result.append("filmID / Titre Original / Année / Réalisateur / Autre titre / Pays / Chemin du fichier");
+
+        //String[] columnNames = {"filmID", "Titre Original", "Année", "Réalisateur", "Autre titre", "Pays", "Chemin du fichier"};
+        //Object[][] data;
+        //Vector<Vector<Object>> data = new Vector<>();
+        //http://www.java2s.com/Tutorial/Java/0240__Swing/publicJTableVectorrowDataVectorcolumnNames.htm
+        int counter = 0;
 
         try (Connection conn = this.connect();
              Statement stmt  = conn.createStatement();
@@ -95,13 +110,57 @@ public class SQLiteHelper {
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println(rs.getString("filmID") +  "\t" +
-                    rs.getInt("year") + "\t" +
+                //Object[counter][0] = new Object{};
+                //data.get(counter++).add({});
+
+                result.append("\n" + rs.getString("filmID") + " "
+                        + rs.getString("original_title") + " "
+                        + rs.getInt("year") + " "
+                        + rs.getString("director") + " "
+                        + rs.getString("second_title") + " "
+                        + rs.getString("country") + " "
+                        + rs.getString("file_path") + " ");
+
+                //Debug
+                /*System.out.println(rs.getString("filmID") +  "\t" +
                     rs.getString("original_title") + "\t" +
+                    rs.getInt("year") + "\t" +
                     rs.getString("director") + "\t" +
                     rs.getString("second_title") + "\t" +
                     rs.getString("country") + "\t" +
                     rs.getString("file_path")
+                );*/
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        result.setFont(new Font("Courier", Font.PLAIN, 12));
+        //JOptionPane.showMessageDialog(null, result, "Liste de tous les films", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, scrollPane, "Liste de tous les films", JOptionPane.PLAIN_MESSAGE);
+    }//END of selectAll()
+
+    public void searchByTitle(String title){
+        String sql = "SELECT * "
+                + "FROM films WHERE original_title LIKE ?";
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            // set the value
+            pstmt.setString(1, "%" + title + "%");
+            //
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while (rs.next()) {
+                System.out.println(rs.getString("filmID") +  "\t" +
+                        rs.getString("original_title") + "\t" +
+                        rs.getInt("year") + "\t" +
+                        rs.getString("director") + "\t" +
+                        rs.getString("second_title") + "\t" +
+                        rs.getString("country") + "\t" +
+                        rs.getString("file_path")
                 );
             }
         } catch (SQLException e) {

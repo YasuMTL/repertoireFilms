@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static com.repertoire.Main.SQLite;
+
 public class WindowSearch extends JFrame implements ActionListener {
 
     private JLabel labelNum,
@@ -49,6 +51,8 @@ public class WindowSearch extends JFrame implements ActionListener {
         }
         else if (e.getSource() == buttonSearch){
             //requête SELECT
+            //SQLite.selectAll();
+            SQLite.searchByTitle(fieldTitle.getText());
         }
     }
 

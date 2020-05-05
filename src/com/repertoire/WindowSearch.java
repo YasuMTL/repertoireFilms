@@ -9,13 +9,13 @@ import static com.repertoire.Main.SQLite;
 
 public class WindowSearch extends JFrame implements ActionListener {
 
-    private JLabel labelNum,
+    private JLabel //labelNum,
                    labelTitle,
                    labelYear,
                    labelDirector,
                    labelSecondTitle,
                    labelCountry;
-    private JTextField fieldNum,
+    private JTextField //fieldNum,
                        fieldTitle,
                        fieldYear,
                        fieldDirector,
@@ -27,9 +27,9 @@ public class WindowSearch extends JFrame implements ActionListener {
     WindowSearch(){
         super("Recherche de films");
         container = getContentPane();
-        container.setLayout(new GridLayout(7, 2, 6, 6));
+        container.setLayout(new GridLayout(6, 2, 6, 6));
 
-        createNumLabelField();
+        //createNumLabelField();
         createTitleLabelField();
         createYearLabelField();
         createDirectorLabelField();
@@ -52,7 +52,11 @@ public class WindowSearch extends JFrame implements ActionListener {
         else if (e.getSource() == buttonSearch){
             //requête SELECT
             //SQLite.selectAll();
-            SQLite.searchByTitle(fieldTitle.getText());
+            SQLite.searchByTitle(fieldTitle.getText(),
+                    fieldYear.getText(),
+                    fieldDirector.getText(),
+                    fieldSecondTitle.getText(),
+                    fieldCountry.getText());
         }
     }
 
@@ -108,11 +112,11 @@ public class WindowSearch extends JFrame implements ActionListener {
         container.add(fieldTitle);
     }
 
-    private void createNumLabelField() {
+    /*private void createNumLabelField() {
         labelNum = new JLabel("Numéro : ", SwingConstants.RIGHT);
         fieldNum = new JTextField();
         fieldNum.addActionListener(this);
         container.add(labelNum);
         container.add(fieldNum);
-    }
+    }*/
 }

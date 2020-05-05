@@ -15,7 +15,7 @@ public class Main extends JFrame implements ActionListener {
     private JPanel panel;
     public static SQLiteHelper SQLite;
 
-    public static void insert(){
+    /*public static void insert(){
         String originalTitle = "testppp",
                 director = "Quidom",
                 secondTitle = "debug",
@@ -23,7 +23,7 @@ public class Main extends JFrame implements ActionListener {
                 filePath = "C:\\Users\\Yasunari\\Desktop\\sql";
         int year = 2000;
         SQLite.insert(originalTitle, year, director, secondTitle, country, filePath);
-    }
+    }*/
 
     public static void main(String[] args){
         EventQueue.invokeLater
@@ -32,11 +32,11 @@ public class Main extends JFrame implements ActionListener {
                     SQLite.createNewDB("test_1.db");
                     SQLite.createNewTable();
                     //insert();
-                    /*try {
+                    try {
                         readFile();
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }*/
+                    }
                     //SQLite.selectAll();
 
                     JFrame frameTest = new JFrame("Test");

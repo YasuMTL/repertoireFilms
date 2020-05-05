@@ -3,6 +3,8 @@ package com.repertoire;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class SQLiteHelper {
@@ -59,14 +61,15 @@ public class SQLiteHelper {
         }
     }//END of createNewTable()
 
-    public void insert(String originalTitle, int year, String director, String secondTitle, String country, String filePath) {
+    public void insert(String originalTitle, String year, String director, String secondTitle, String country, String filePath) {
         String sql = "INSERT INTO films(original_title, year, director, second_title, country, file_path) VALUES(?,?,?,?,?,?)";
 
         try (Connection conn = this.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql))
         {
             pstmt.setString(1, originalTitle);
-            pstmt.setInt(2, year);
+            //pstmt.setInt(2, year);
+            pstmt.setString(2, year);
             pstmt.setString(3, director);
             pstmt.setString(4, secondTitle);
             pstmt.setString(5, country);
@@ -115,7 +118,8 @@ public class SQLiteHelper {
 
                 result.append("\n" + rs.getString("filmID") + " "
                         + rs.getString("original_title") + " "
-                        + rs.getInt("year") + " "
+                        //+ rs.getInt("year") + " "
+                        + rs.getString("year") + " "
                         + rs.getString("director") + " "
                         + rs.getString("second_title") + " "
                         + rs.getString("country") + " "
@@ -140,23 +144,85 @@ public class SQLiteHelper {
         JOptionPane.showMessageDialog(null, scrollPane, "Liste de tous les films", JOptionPane.PLAIN_MESSAGE);
     }//END of selectAll()
 
-    public void searchByTitle(String title){
+    public void searchByTitle(String originalTitle, String year, String director, String second_title, String country){
+        /*String sql = "SELECT * "
+                + "FROM films "
+                + "WHERE original_title LIKE ? "
+                //+ "OR year LIKE ? "
+                + "OR year = ? "
+                + "OR director LIKE ? "
+                + "OR second_title LIKE ? "
+                + "OR country LIKE ? ";*/
         String sql = "SELECT * "
-                + "FROM films WHERE original_title LIKE ?";
+                + "FROM films "
+                + "WHERE 1 = 1 ";
+        List<String> parameters = new ArrayList<>();
+
+        if (!originalTitle.equals("")){
+            sql += "AND original_title like ? ";
+            parameters.add("originalTitle");
+        }
+
+        if (!year.equals("")){
+            sql += "AND year like ? ";
+            parameters.add("year");
+        }
+
+        if (!director.equals("")){
+            sql += "AND director like ? ";
+            parameters.add("originalTitle");
+        }
+
+        if (!second_title.equals("")){
+            sql += "AND second_title like ? ";
+            parameters.add("year");
+        }
+
+        if (!country.equals("")){
+            sql += "AND country like ? ";
+            parameters.add("originalTitle");
+        }
 
         try (Connection conn = this.connect();
-             PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            int columnIndex = 0;
 
             // set the value
-            pstmt.setString(1, "%" + title + "%");
-            //
+            if (parameters.contains("originalTitle")){
+                pstmt.setString(++columnIndex, "%" + originalTitle + "%");
+            }
+            //pstmt.setString(1, "%" + originalTitle + "%");
+
+            if (parameters.contains("year")){
+                pstmt.setString(++columnIndex, "%" + year + "%");
+            }
+            //pstmt.setInt(2, Integer.parseInt(year));
+            //pstmt.setString(2, "%" + year + "%");
+
+            if (parameters.contains("director")){
+                pstmt.setString(++columnIndex, "%" + director + "%");
+            }
+            //pstmt.setString(3, "%" + director + "%");
+
+            if (parameters.contains("second_title")){
+                pstmt.setString(++columnIndex, "%" + second_title + "%");
+            }
+            //pstmt.setString(4, "%" + second_title + "%");
+
+            if (parameters.contains("country")){
+                pstmt.setString(++columnIndex, "%" + country + "%");
+            }
+            //pstmt.setString(5, "%" + country + "%");
+
             ResultSet rs  = pstmt.executeQuery();
 
             // loop through the result set
             while (rs.next()) {
                 System.out.println(rs.getString("filmID") +  "\t" +
                         rs.getString("original_title") + "\t" +
-                        rs.getInt("year") + "\t" +
+                        //rs.getInt("year") + "\t" +
+                        rs.getString("year") + "\t" +
                         rs.getString("director") + "\t" +
                         rs.getString("second_title") + "\t" +
                         rs.getString("country") + "\t" +

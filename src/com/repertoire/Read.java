@@ -3,7 +3,6 @@ package com.repertoire;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.StringTokenizer;
 
 import static com.repertoire.Main.SQLite;
 
@@ -12,8 +11,8 @@ public class Read {
     Read(){}
 
     static void readFile() throws IOException {
-        String entryLine, originalTitle, director, secondTitle, country, filePath;
-        int year;
+        String entryLine, originalTitle, year, director, secondTitle, country, filePath;
+        //int year;
         BufferedReader entryFile = new BufferedReader(
                                         new FileReader("data.txt")
                                    );
@@ -31,9 +30,11 @@ public class Read {
             originalTitle = columns[0];
 
             if (columns[1].isEmpty()) {
-                year = 1000;
+                //year = 1000;
+                year = "1000";
             }else {
-                year = Integer.parseInt(columns[1]);
+                //year = Integer.parseInt(columns[1]);
+                year = columns[1];
             }
             director = columns[2];
             secondTitle = columns[3];

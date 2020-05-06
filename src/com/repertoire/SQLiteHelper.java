@@ -92,7 +92,7 @@ public class SQLiteHelper {
         return conn;
     }
 
-    public void searchByTitle(String originalTitle, String year, String director, String second_title, String country){
+    public void searchByTitle(String titleOrSecondTitle, String year, String director, /*String second_title,*/ String country){
 
         JTextArea result = new JTextArea();
         JScrollPane scrollPane = new JScrollPane(result);
@@ -106,9 +106,10 @@ public class SQLiteHelper {
                 + "WHERE 1 = 1 ";
         List<String> parameters = new ArrayList<>();
 
-        if (!originalTitle.equals("")){
-            sql += "AND original_title like ? ";
-            parameters.add("originalTitle");
+        if (!titleOrSecondTitle.equals("")){
+            sql += "AND (original_title like ? OR second_title like ?) ";
+            //parameters.add("originalTitle");
+            parameters.add("title");
         }
 
         if (!year.equals("")){
@@ -121,10 +122,10 @@ public class SQLiteHelper {
             parameters.add("director");
         }
 
-        if (!second_title.equals("")){
+        /*if (!second_title.equals("")){
             sql += "AND second_title like ? ";
             parameters.add("second_title");
-        }
+        }*/
 
         if (!country.equals("")){
             sql += "AND country like ? ";
@@ -137,24 +138,33 @@ public class SQLiteHelper {
             int columnIndex = 0;
 
             // set the value
-            if (parameters.contains("originalTitle")){
-                pstmt.setString(++columnIndex, "%" + originalTitle + "%");
+            //if (parameters.contains("originalTitle")){
+            if (parameters.contains("title")){
+                //pstmt.setString(++columnIndex, "%" + originalTitle + "%");
+                //For title
+                pstmt.setString(++columnIndex, "%" + titleOrSecondTitle + "%");
+                //For second_title
+                pstmt.setString(++columnIndex, "%" + titleOrSecondTitle + "%");
+                System.out.println("titleOrSecondTitle = " + titleOrSecondTitle);
             }
 
             if (parameters.contains("year")){
                 pstmt.setString(++columnIndex, "%" + year + "%");
+                System.out.println("year = " + year);
             }
 
             if (parameters.contains("director")){
                 pstmt.setString(++columnIndex, "%" + director + "%");
+                System.out.println("director = " + director);
             }
 
-            if (parameters.contains("second_title")){
+            /*if (parameters.contains("second_title")){
                 pstmt.setString(++columnIndex, "%" + second_title + "%");
-            }
+            }*/
 
             if (parameters.contains("country")){
                 pstmt.setString(++columnIndex, "%" + country + "%");
+                System.out.println("country = " + country);
             }
 
             ResultSet rs  = pstmt.executeQuery();
@@ -174,6 +184,6 @@ public class SQLiteHelper {
         }
 
         result.setFont(new Font("Courier", Font.PLAIN, 12));
-        JOptionPane.showMessageDialog(null, scrollPane, "Liste de tous les films", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, scrollPane, "Liste des films cherchés", JOptionPane.PLAIN_MESSAGE);
     }
 }

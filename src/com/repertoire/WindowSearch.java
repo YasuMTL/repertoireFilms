@@ -12,26 +12,25 @@ public class WindowSearch extends JFrame implements ActionListener {
     private JLabel labelTitle,
                    labelYear,
                    labelDirector,
-                   labelSecondTitle,
+                   //labelSecondTitle,
                    labelCountry;
-    private JTextField //fieldNum,
-                       fieldTitle,
+    private JTextField fieldTitle,
                        fieldYear,
                        fieldDirector,
-                       fieldSecondTitle,
+                       //fieldSecondTitle,
                        fieldCountry;
-    private JButton boutonTerminer, buttonSearch;
+    private JButton buttonFinish, buttonSearch;
     private Container container;
 
     WindowSearch(){
         super("Recherche de films");
         container = getContentPane();
-        container.setLayout(new GridLayout(6, 2, 6, 6));
+        container.setLayout(new GridLayout(5, 2, 6, 6));
 
         createTitleLabelField();
         createYearLabelField();
         createDirectorLabelField();
-        createSecondTitleLabelField();
+        //createSecondTitleLabelField();
         createCountryLabelField();
 
         createButtonEnd();
@@ -44,7 +43,7 @@ public class WindowSearch extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == boutonTerminer){
+        if (e.getSource() == buttonFinish){
             dispose();
         }
         else if (e.getSource() == buttonSearch){
@@ -52,7 +51,7 @@ public class WindowSearch extends JFrame implements ActionListener {
             SQLite.searchByTitle(fieldTitle.getText(),
                     fieldYear.getText(),
                     fieldDirector.getText(),
-                    fieldSecondTitle.getText(),
+                    //fieldSecondTitle.getText(),
                     fieldCountry.getText());
         }
     }
@@ -64,9 +63,9 @@ public class WindowSearch extends JFrame implements ActionListener {
     }
 
     private void createButtonEnd() {
-        boutonTerminer = new JButton("Terminer");
-        boutonTerminer.addActionListener(this);
-        container.add(boutonTerminer);
+        buttonFinish = new JButton("Terminer");
+        buttonFinish.addActionListener(this);
+        container.add(buttonFinish);
     }
 
     private void createCountryLabelField() {
@@ -77,13 +76,13 @@ public class WindowSearch extends JFrame implements ActionListener {
         container.add(fieldCountry);
     }
 
-    private void createSecondTitleLabelField() {
+    /*private void createSecondTitleLabelField() {
         labelSecondTitle = new JLabel("Autre titre : ", SwingConstants.RIGHT);
         fieldSecondTitle = new JTextField();
         fieldSecondTitle.addActionListener(this);
         container.add(labelSecondTitle);
         container.add(fieldSecondTitle);
-    }
+    }*/
 
     private void createDirectorLabelField() {
         labelDirector = new JLabel("Réalisateur : ", SwingConstants.RIGHT);
@@ -102,7 +101,7 @@ public class WindowSearch extends JFrame implements ActionListener {
     }
 
     private void createTitleLabelField() {
-        labelTitle = new JLabel("Titre : ", SwingConstants.RIGHT);
+        labelTitle = new JLabel("Titre ou autre titre : ", SwingConstants.RIGHT);
         fieldTitle = new JTextField();
         fieldTitle.addActionListener(this);
         container.add(labelTitle);

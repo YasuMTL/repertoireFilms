@@ -63,10 +63,10 @@ public class Main extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Ajouter\".", "Ajouter", JOptionPane.PLAIN_MESSAGE);
         }
         else if (e.getSource() == btnModify){
-            JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Modifier\".", "ENREGISTRER", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Modifier\".", "Modifier", JOptionPane.PLAIN_MESSAGE);
         }
         else if (e.getSource() == btnDelete){
-            JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Supprimer\".", "ENREGISTRER", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Supprimer\".", "Supprimer", JOptionPane.PLAIN_MESSAGE);
         }
     }
 }

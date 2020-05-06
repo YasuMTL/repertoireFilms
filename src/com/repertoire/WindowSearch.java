@@ -19,13 +19,13 @@ public class WindowSearch extends JFrame implements ActionListener {
                        fieldDirector,
                        //fieldSecondTitle,
                        fieldCountry;
-    private JButton buttonFinish, buttonSearch;
+    private JButton buttonFinish, buttonSearch, buttonRemoveAll;
     private Container container;
 
     WindowSearch(){
         super("Recherche de films");
         container = getContentPane();
-        container.setLayout(new GridLayout(5, 2, 6, 6));
+        container.setLayout(new GridLayout(6, 3, 6, 6));
 
         createTitleLabelField();
         createYearLabelField();
@@ -35,6 +35,7 @@ public class WindowSearch extends JFrame implements ActionListener {
 
         createButtonEnd();
         createButtonSearch();
+        createButtonRemoveAll();
 
         setSize(300, 250);
         setLocation(400, 400);
@@ -47,13 +48,24 @@ public class WindowSearch extends JFrame implements ActionListener {
             dispose();
         }
         else if (e.getSource() == buttonSearch){
-            //requête SELECT
             SQLite.searchByTitle(fieldTitle.getText(),
                     fieldYear.getText(),
                     fieldDirector.getText(),
                     //fieldSecondTitle.getText(),
                     fieldCountry.getText());
         }
+        else if (e.getSource() == buttonRemoveAll){
+            fieldTitle.setText("");
+            fieldYear.setText("");
+            fieldDirector.setText("");
+            fieldCountry.setText("");
+        }
+    }
+
+    private void createButtonRemoveAll(){
+        buttonRemoveAll = new JButton("Vider");
+        buttonRemoveAll.addActionListener(this);
+        container.add(buttonRemoveAll);
     }
 
     private void createButtonSearch() {

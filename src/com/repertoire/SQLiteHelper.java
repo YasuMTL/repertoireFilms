@@ -101,6 +101,8 @@ public class SQLiteHelper {
         scrollPane.setPreferredSize( new Dimension( 900, 500 ) );
         result.append("filmID / Titre Original / Année / Réalisateur / Autre titre / Pays / Chemin du fichier");
 
+        String[] columns = {"filmID", "Titre Original", "Année", "Réalisateur", "Autre titre", "Pays", "Chemin du fichier"};
+
         String sql = "SELECT * "
                 + "FROM films "
                 + "WHERE 1 = 1 ";

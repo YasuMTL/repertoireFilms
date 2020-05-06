@@ -92,8 +92,8 @@ public class SQLiteHelper {
         return conn;
     }
 
-    public void selectAll(){
-        String sql = "SELECT * FROM films";
+    public void searchByTitle(String originalTitle, String year, String director, String second_title, String country){
+
         JTextArea result = new JTextArea();
         JScrollPane scrollPane = new JScrollPane(result);
         result.setLineWrap(true);
@@ -101,58 +101,6 @@ public class SQLiteHelper {
         scrollPane.setPreferredSize( new Dimension( 900, 500 ) );
         result.append("filmID / Titre Original / Année / Réalisateur / Autre titre / Pays / Chemin du fichier");
 
-        //String[] columnNames = {"filmID", "Titre Original", "Année", "Réalisateur", "Autre titre", "Pays", "Chemin du fichier"};
-        //Object[][] data;
-        //Vector<Vector<Object>> data = new Vector<>();
-        //http://www.java2s.com/Tutorial/Java/0240__Swing/publicJTableVectorrowDataVectorcolumnNames.htm
-        int counter = 0;
-
-        try (Connection conn = this.connect();
-             Statement stmt  = conn.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-
-            // loop through the result set
-            while (rs.next()) {
-                //Object[counter][0] = new Object{};
-                //data.get(counter++).add({});
-
-                result.append("\n" + rs.getString("filmID") + " "
-                        + rs.getString("original_title") + " "
-                        //+ rs.getInt("year") + " "
-                        + rs.getString("year") + " "
-                        + rs.getString("director") + " "
-                        + rs.getString("second_title") + " "
-                        + rs.getString("country") + " "
-                        + rs.getString("file_path") + " ");
-
-                //Debug
-                /*System.out.println(rs.getString("filmID") +  "\t" +
-                    rs.getString("original_title") + "\t" +
-                    rs.getInt("year") + "\t" +
-                    rs.getString("director") + "\t" +
-                    rs.getString("second_title") + "\t" +
-                    rs.getString("country") + "\t" +
-                    rs.getString("file_path")
-                );*/
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        result.setFont(new Font("Courier", Font.PLAIN, 12));
-        //JOptionPane.showMessageDialog(null, result, "Liste de tous les films", JOptionPane.PLAIN_MESSAGE);
-        JOptionPane.showMessageDialog(null, scrollPane, "Liste de tous les films", JOptionPane.PLAIN_MESSAGE);
-    }//END of selectAll()
-
-    public void searchByTitle(String originalTitle, String year, String director, String second_title, String country){
-        /*String sql = "SELECT * "
-                + "FROM films "
-                + "WHERE original_title LIKE ? "
-                //+ "OR year LIKE ? "
-                + "OR year = ? "
-                + "OR director LIKE ? "
-                + "OR second_title LIKE ? "
-                + "OR country LIKE ? ";*/
         String sql = "SELECT * "
                 + "FROM films "
                 + "WHERE 1 = 1 ";
@@ -170,17 +118,17 @@ public class SQLiteHelper {
 
         if (!director.equals("")){
             sql += "AND director like ? ";
-            parameters.add("originalTitle");
+            parameters.add("director");
         }
 
         if (!second_title.equals("")){
             sql += "AND second_title like ? ";
-            parameters.add("year");
+            parameters.add("second_title");
         }
 
         if (!country.equals("")){
             sql += "AND country like ? ";
-            parameters.add("originalTitle");
+            parameters.add("country");
         }
 
         try (Connection conn = this.connect();
@@ -192,45 +140,40 @@ public class SQLiteHelper {
             if (parameters.contains("originalTitle")){
                 pstmt.setString(++columnIndex, "%" + originalTitle + "%");
             }
-            //pstmt.setString(1, "%" + originalTitle + "%");
 
             if (parameters.contains("year")){
                 pstmt.setString(++columnIndex, "%" + year + "%");
             }
-            //pstmt.setInt(2, Integer.parseInt(year));
-            //pstmt.setString(2, "%" + year + "%");
 
             if (parameters.contains("director")){
                 pstmt.setString(++columnIndex, "%" + director + "%");
             }
-            //pstmt.setString(3, "%" + director + "%");
 
             if (parameters.contains("second_title")){
                 pstmt.setString(++columnIndex, "%" + second_title + "%");
             }
-            //pstmt.setString(4, "%" + second_title + "%");
 
             if (parameters.contains("country")){
                 pstmt.setString(++columnIndex, "%" + country + "%");
             }
-            //pstmt.setString(5, "%" + country + "%");
 
             ResultSet rs  = pstmt.executeQuery();
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println(rs.getString("filmID") +  "\t" +
-                        rs.getString("original_title") + "\t" +
-                        //rs.getInt("year") + "\t" +
-                        rs.getString("year") + "\t" +
-                        rs.getString("director") + "\t" +
-                        rs.getString("second_title") + "\t" +
-                        rs.getString("country") + "\t" +
-                        rs.getString("file_path")
-                );
+                result.append("\n" + rs.getString("filmID") + " "
+                        + rs.getString("original_title") + " "
+                        + rs.getString("year") + " "
+                        + rs.getString("director") + " "
+                        + rs.getString("second_title") + " "
+                        + rs.getString("country") + " "
+                        + rs.getString("file_path") + " ");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
+        result.setFont(new Font("Courier", Font.PLAIN, 12));
+        JOptionPane.showMessageDialog(null, scrollPane, "Liste de tous les films", JOptionPane.PLAIN_MESSAGE);
     }
 }

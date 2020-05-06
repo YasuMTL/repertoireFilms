@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-
 import static com.repertoire.Read.readFile;
 
 public class Main extends JFrame implements ActionListener {
@@ -15,29 +14,19 @@ public class Main extends JFrame implements ActionListener {
     private JPanel panel;
     public static SQLiteHelper SQLite;
 
-    /*public static void insert(){
-        String originalTitle = "testppp",
-                director = "Quidom",
-                secondTitle = "debug",
-                country = "Canada",
-                filePath = "C:\\Users\\Yasunari\\Desktop\\sql";
-        int year = 2000;
-        SQLite.insert(originalTitle, year, director, secondTitle, country, filePath);
-    }*/
-
     public static void main(String[] args){
         EventQueue.invokeLater
                 (() -> {
                     SQLite = new SQLiteHelper();
                     SQLite.createNewDB("test_1.db");
                     SQLite.createNewTable();
-                    //insert();
-                    try {
+
+                    //read the file
+                    /*try {
                         readFile();
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
-                    //SQLite.selectAll();
+                    }*/
 
                     JFrame frameTest = new JFrame("Test");
                     frameTest.setContentPane(new Main().panel);

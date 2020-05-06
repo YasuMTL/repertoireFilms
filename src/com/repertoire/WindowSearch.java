@@ -9,8 +9,7 @@ import static com.repertoire.Main.SQLite;
 
 public class WindowSearch extends JFrame implements ActionListener {
 
-    private JLabel //labelNum,
-                   labelTitle,
+    private JLabel labelTitle,
                    labelYear,
                    labelDirector,
                    labelSecondTitle,
@@ -29,7 +28,6 @@ public class WindowSearch extends JFrame implements ActionListener {
         container = getContentPane();
         container.setLayout(new GridLayout(6, 2, 6, 6));
 
-        //createNumLabelField();
         createTitleLabelField();
         createYearLabelField();
         createDirectorLabelField();
@@ -51,7 +49,6 @@ public class WindowSearch extends JFrame implements ActionListener {
         }
         else if (e.getSource() == buttonSearch){
             //requête SELECT
-            //SQLite.selectAll();
             SQLite.searchByTitle(fieldTitle.getText(),
                     fieldYear.getText(),
                     fieldDirector.getText(),
@@ -111,12 +108,4 @@ public class WindowSearch extends JFrame implements ActionListener {
         container.add(labelTitle);
         container.add(fieldTitle);
     }
-
-    /*private void createNumLabelField() {
-        labelNum = new JLabel("Numéro : ", SwingConstants.RIGHT);
-        fieldNum = new JTextField();
-        fieldNum.addActionListener(this);
-        container.add(labelNum);
-        container.add(fieldNum);
-    }*/
 }

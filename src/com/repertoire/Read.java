@@ -21,11 +21,7 @@ public class Read {
 
         while (entryLine != null){
             String[] columns = entryLine.split(";");
-//            int index = 0;
             System.out.println("columns.length = " + columns.length);
-            /*for (String column: columns) {
-                System.out.println(index++ + ") " + column);
-            }*/
 
             originalTitle = columns[0];
 

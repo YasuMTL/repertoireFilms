@@ -1,6 +1,7 @@
 package com.repertoire;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -94,14 +95,19 @@ public class SQLiteHelper {
 
     public void searchByTitle(String titleOrSecondTitle, String year, String director, /*String second_title,*/ String country){
 
-        JTextArea result = new JTextArea();
-        JScrollPane scrollPane = new JScrollPane(result);
-        result.setLineWrap(true);
-        result.setWrapStyleWord(true);
-        scrollPane.setPreferredSize( new Dimension( 900, 500 ) );
-        result.append("filmID / Titre Original / Année / Réalisateur / Autre titre / Pays / Chemin du fichier");
+        //JTextArea result = new JTextArea();
 
-        String[] columns = {"filmID", "Titre Original", "Année", "Réalisateur", "Autre titre", "Pays", "Chemin du fichier"};
+        JTable jtable = new JTable();
+        DefaultTableModel model;
+
+        JScrollPane scrollPane = new JScrollPane(jtable);
+        /*result.setLineWrap(true);
+        result.setWrapStyleWord(true);*/
+        scrollPane.setPreferredSize( new Dimension( 900, 500 ) );
+        //result.append("filmID / Titre Original / Année / Réalisateur / Autre titre / Pays / Chemin du fichier");
+
+        //String[] columns = {"filmID", "Titre Original", "Année", "Réalisateur", "Autre titre", "Pays", "Chemin du fichier"};
+
 
         String sql = "SELECT * "
                 + "FROM films "
@@ -171,21 +177,40 @@ public class SQLiteHelper {
 
             ResultSet rs  = pstmt.executeQuery();
 
+            model = new DefaultTableModel();
+            jtable.setModel(model);
+            model.addColumn("filmID");
+            model.addColumn("Titre Original");
+            model.addColumn("Année");
+            model.addColumn("Réalisateur");
+            model.addColumn("Autre titre");
+            model.addColumn("Pays");
+            model.addColumn("Chemin du fichier");
+
             // loop through the result set
             while (rs.next()) {
-                result.append("\n" + rs.getString("filmID") + " "
+                model.addRow(new Object[]{rs.getString("filmID"),
+                        rs.getString("original_title"),
+                        rs.getString("year"),
+                        rs.getString("director"),
+                        rs.getString("second_title"),
+                        rs.getString("country"),
+                        rs.getString("file_path")}
+                );
+
+                /*result.append("\n" + rs.getString("filmID") + " "
                         + rs.getString("original_title") + " "
                         + rs.getString("year") + " "
                         + rs.getString("director") + " "
                         + rs.getString("second_title") + " "
                         + rs.getString("country") + " "
-                        + rs.getString("file_path") + " ");
+                        + rs.getString("file_path") + " ");*/
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        result.setFont(new Font("Courier", Font.PLAIN, 12));
+        //result.setFont(new Font("Courier", Font.PLAIN, 12));
         JOptionPane.showMessageDialog(null, scrollPane, "Liste des films cherchés", JOptionPane.PLAIN_MESSAGE);
     }
 }

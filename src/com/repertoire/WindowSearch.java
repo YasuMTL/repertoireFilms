@@ -5,37 +5,34 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static com.repertoire.Main.SQLite;
+
 public class WindowSearch extends JFrame implements ActionListener {
 
-    private JLabel labelNum,
-                   labelTitle,
+    private JLabel labelTitle,
                    labelYear,
                    labelDirector,
-                   labelSecondTitle,
                    labelCountry;
-    private JTextField fieldNum,
-                       fieldTitle,
+    private JTextField fieldTitle,
                        fieldYear,
                        fieldDirector,
-                       fieldSecondTitle,
                        fieldCountry;
-    private JButton boutonTerminer, buttonSearch;
+    private JButton buttonFinish, buttonSearch, buttonRemoveAll;
     private Container container;
 
     WindowSearch(){
         super("Recherche de films");
         container = getContentPane();
-        container.setLayout(new GridLayout(7, 2, 6, 6));
+        container.setLayout(new GridLayout(6, 3, 6, 6));
 
-        createNumLabelField();
         createTitleLabelField();
         createYearLabelField();
         createDirectorLabelField();
-        createSecondTitleLabelField();
         createCountryLabelField();
 
         createButtonEnd();
         createButtonSearch();
+        createButtonRemoveAll();
 
         setSize(300, 250);
         setLocation(400, 400);
@@ -44,12 +41,27 @@ public class WindowSearch extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == boutonTerminer){
+        if (e.getSource() == buttonFinish){
             dispose();
         }
         else if (e.getSource() == buttonSearch){
-            //requête SELECT
+            SQLite.searchByTitle(fieldTitle.getText(),
+                    fieldYear.getText(),
+                    fieldDirector.getText(),
+                    fieldCountry.getText());
         }
+        else if (e.getSource() == buttonRemoveAll){
+            fieldTitle.setText("");
+            fieldYear.setText("");
+            fieldDirector.setText("");
+            fieldCountry.setText("");
+        }
+    }
+
+    private void createButtonRemoveAll(){
+        buttonRemoveAll = new JButton("Vider");
+        buttonRemoveAll.addActionListener(this);
+        container.add(buttonRemoveAll);
     }
 
     private void createButtonSearch() {
@@ -59,9 +71,9 @@ public class WindowSearch extends JFrame implements ActionListener {
     }
 
     private void createButtonEnd() {
-        boutonTerminer = new JButton("Terminer");
-        boutonTerminer.addActionListener(this);
-        container.add(boutonTerminer);
+        buttonFinish = new JButton("Terminer");
+        buttonFinish.addActionListener(this);
+        container.add(buttonFinish);
     }
 
     private void createCountryLabelField() {
@@ -70,14 +82,6 @@ public class WindowSearch extends JFrame implements ActionListener {
         fieldCountry.addActionListener(this);
         container.add(labelCountry);
         container.add(fieldCountry);
-    }
-
-    private void createSecondTitleLabelField() {
-        labelSecondTitle = new JLabel("Autre titre : ", SwingConstants.RIGHT);
-        fieldSecondTitle = new JTextField();
-        fieldSecondTitle.addActionListener(this);
-        container.add(labelSecondTitle);
-        container.add(fieldSecondTitle);
     }
 
     private void createDirectorLabelField() {
@@ -97,18 +101,10 @@ public class WindowSearch extends JFrame implements ActionListener {
     }
 
     private void createTitleLabelField() {
-        labelTitle = new JLabel("Titre : ", SwingConstants.RIGHT);
+        labelTitle = new JLabel("Titre ou autre titre : ", SwingConstants.RIGHT);
         fieldTitle = new JTextField();
         fieldTitle.addActionListener(this);
         container.add(labelTitle);
         container.add(fieldTitle);
-    }
-
-    private void createNumLabelField() {
-        labelNum = new JLabel("Numéro : ", SwingConstants.RIGHT);
-        fieldNum = new JTextField();
-        fieldNum.addActionListener(this);
-        container.add(labelNum);
-        container.add(fieldNum);
     }
 }

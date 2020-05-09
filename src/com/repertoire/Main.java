@@ -1,16 +1,9 @@
 package com.repertoire;
 
 import javax.swing.*;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import static com.repertoire.Read.readFile;
 
 public class Main extends JFrame implements ActionListener {
     private JButton btnSearch, btnInsert, btnModify, btnDelete;
@@ -79,56 +72,11 @@ public class Main extends JFrame implements ActionListener {
         }
         else if (e.getSource() == btnModify){
             JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Modifier\".\nLa copie commence !", "Modifier", JOptionPane.PLAIN_MESSAGE);
-            try {
-                fileInOut();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-            JOptionPane.showMessageDialog(null, "La copie est terminée !", "Modifier", JOptionPane.PLAIN_MESSAGE);
+
+
         }
         else if (e.getSource() == btnDelete){
             JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Supprimer\".", "Supprimer", JOptionPane.PLAIN_MESSAGE);
-
-            sampleJFileChooser();
-        }
-    }
-
-    public void fileInOut() throws IOException{
-
-        //FileInputStreamのオブジェクトを生成する
-        FileInputStream fileIn = new FileInputStream("C:\\Users\\Yasunari\\Desktop\\S1 - 21 [1080p].mkv");
-
-        //FileOutputStreamのオブジェクトを生成する
-        FileOutputStream fileOut = new FileOutputStream("C:\\Users\\Yasunari\\Desktop\\Copied_S1 - 21 [1080p].mkv");
-
-        // byte型の配列を宣言
-        byte[] buf = new byte[256];
-        int len;
-
-        // ファイルの終わりまで読み込む
-        while((len = fileIn.read(buf)) != -1){
-            fileOut.write(buf);
-        }
-
-        //ファイルに内容を書き込む
-        fileOut.flush();
-
-        //ファイルの終了処理
-        fileOut.close();
-        fileIn.close();
-    }
-
-    public void sampleJFileChooser(){
-
-        JFileChooser jFileChooser = new JFileChooser();
-        jFileChooser.setCurrentDirectory(new File("E:\\Films Alexe"));
-
-        int result = jFileChooser.showOpenDialog(new JFrame());
-
-
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = jFileChooser.getSelectedFile();
-            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
         }
     }
 }

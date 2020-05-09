@@ -12,12 +12,10 @@ public class WindowSearch extends JFrame implements ActionListener {
     private JLabel labelTitle,
                    labelYear,
                    labelDirector,
-                   //labelSecondTitle,
                    labelCountry;
     private JTextField fieldTitle,
                        fieldYear,
                        fieldDirector,
-                       //fieldSecondTitle,
                        fieldCountry;
     private JButton buttonFinish, buttonSearch, buttonRemoveAll;
     private Container container;
@@ -30,7 +28,6 @@ public class WindowSearch extends JFrame implements ActionListener {
         createTitleLabelField();
         createYearLabelField();
         createDirectorLabelField();
-        //createSecondTitleLabelField();
         createCountryLabelField();
 
         createButtonEnd();
@@ -51,7 +48,6 @@ public class WindowSearch extends JFrame implements ActionListener {
             SQLite.searchByTitle(fieldTitle.getText(),
                     fieldYear.getText(),
                     fieldDirector.getText(),
-                    //fieldSecondTitle.getText(),
                     fieldCountry.getText());
         }
         else if (e.getSource() == buttonRemoveAll){
@@ -87,14 +83,6 @@ public class WindowSearch extends JFrame implements ActionListener {
         container.add(labelCountry);
         container.add(fieldCountry);
     }
-
-    /*private void createSecondTitleLabelField() {
-        labelSecondTitle = new JLabel("Autre titre : ", SwingConstants.RIGHT);
-        fieldSecondTitle = new JTextField();
-        fieldSecondTitle.addActionListener(this);
-        container.add(labelSecondTitle);
-        container.add(fieldSecondTitle);
-    }*/
 
     private void createDirectorLabelField() {
         labelDirector = new JLabel("Réalisateur : ", SwingConstants.RIGHT);

@@ -27,7 +27,7 @@ public class Read {
 
             if (columns[1].isEmpty()) {
                 //year = 1000;
-                year = "1000";
+                year = "9999";
             }else {
                 //year = Integer.parseInt(columns[1]);
                 year = columns[1];

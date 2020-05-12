@@ -63,12 +63,14 @@ public class Main extends JFrame implements ActionListener {
             WindowSearch windowSearch = new WindowSearch();
         }
         else if (e.getSource() == btnInsert){
-            JHyperlink linkFilePath = new JHyperlink("Click to watch the film");
+            WindowInsert windowInsert = new WindowInsert();
+
+            /*JHyperlink linkFilePath = new JHyperlink("Click to watch the film");
             linkFilePath.setURL(filePath);
-            linkFilePath.setToolTipText("Click this!!!!!!");
+            linkFilePath.setToolTipText("Click this!!!!!!");*/
 
             //JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Ajouter\".\nThe file path: " + filePath, "Ajouter", JOptionPane.PLAIN_MESSAGE);
-            JOptionPane.showMessageDialog(null, linkFilePath);
+            //JOptionPane.showMessageDialog(null, linkFilePath);
         }
         else if (e.getSource() == btnModify){
             JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Modifier\".\nLa copie commence !", "Modifier", JOptionPane.PLAIN_MESSAGE);

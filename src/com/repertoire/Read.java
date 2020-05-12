@@ -12,7 +12,6 @@ public class Read {
 
     static void readFile() throws IOException {
         String entryLine, originalTitle, year, director, secondTitle, country, filePath;
-        //int year;
         BufferedReader entryFile = new BufferedReader(
                                         new FileReader("data.txt")
                                    );
@@ -26,15 +25,15 @@ public class Read {
             originalTitle = columns[0];
 
             if (columns[1].isEmpty()) {
-                //year = 1000;
                 year = "9999";
             }else {
-                //year = Integer.parseInt(columns[1]);
                 year = columns[1];
             }
+
             director = columns[2];
             secondTitle = columns[3];
             country = columns[4];
+
             if (columns.length == 5){
                 filePath = null;
             }else{
@@ -44,11 +43,12 @@ public class Read {
             //Debug
             System.out.println(originalTitle + ", " + year + ", " + director + ", " + secondTitle + ", " + country + ", " + filePath);
 
-            SQLite.insert(originalTitle, year, director, secondTitle, country, filePath);
+            SQLite.addOneFilm(originalTitle, year, director, secondTitle, country, filePath);
 
             entryLine = entryFile.readLine();
-        }
+        }//END of while
 
         entryFile.close();
-    }
-}
+    }//END of readFile()
+
+}//END of Read class

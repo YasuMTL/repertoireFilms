@@ -72,8 +72,33 @@ public class SQLiteHelper {
         }
     }//END of createNewTable()
 
-    public void insert(String originalTitle, String year, String director, String secondTitle, String country, String filePath) {
-        String sql = "INSERT INTO films(original_title, year, director, second_title, country, file_path) VALUES(?,?,?,?,?,?)";
+    public void addOneFilm(String originalTitle, String year, String director, String secondTitle, String country, String filePath) {
+        String sqlAdd = "INSERT INTO films (original_title, year, director, second_title, country, file_path) VALUES(?,?,?,?,?,?)";
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sqlAdd))
+        {
+            pstmt.setString(1, originalTitle);
+            pstmt.setString(2, year);
+            pstmt.setString(3, director);
+            pstmt.setString(4, secondTitle);
+            pstmt.setString(5, country);
+            pstmt.setString(6, filePath);
+            pstmt.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void update(String originalTitle, String year, String director, String secondTitle, String country, String filePath) {
+        String sql = "UPDATE films SET original_title = ?, " +
+                "year = ?, " +
+                "director = ?, " +
+                "second_title = ?, " +
+                "country = ?, " +
+                "file_path = ?";
 
         try (Connection conn = this.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql))

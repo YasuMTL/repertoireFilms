@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Main extends JFrame implements ActionListener {
-    private JButton btnSearch, btnInsert, btnModify, btnDelete;
+    private JButton btnSearch, btnInsert;
     private JFrame window;
     private JMenu menuSearch, menuInsert;
     private JPanel panel;
@@ -31,7 +31,7 @@ public class Main extends JFrame implements ActionListener {
                     JFrame frameTest = new JFrame("Répertoire de films");
                     frameTest.setContentPane(new Main().panel);
                     frameTest.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    frameTest.setLocation(400, 400);
+                    frameTest.setLocationRelativeTo(null);
                     frameTest.pack();
                     frameTest.setVisible(true);
                 });
@@ -45,7 +45,6 @@ public class Main extends JFrame implements ActionListener {
         menuBar.add(menuSearch);
         menuBar.add(menuInsert);
         window.setJMenuBar(menuBar);
-        //window.setLocation(400, 400);
         window.setSize(400, 400);
 
         //test
@@ -53,8 +52,6 @@ public class Main extends JFrame implements ActionListener {
 
         btnSearch.addActionListener(this);
         btnInsert.addActionListener(this);
-        btnModify.addActionListener(this);
-        btnDelete.addActionListener(this);
     }
 
     @Override
@@ -64,21 +61,6 @@ public class Main extends JFrame implements ActionListener {
         }
         else if (e.getSource() == btnInsert){
             WindowInsert windowInsert = new WindowInsert();
-
-            /*JHyperlink linkFilePath = new JHyperlink("Click to watch the film");
-            linkFilePath.setURL(filePath);
-            linkFilePath.setToolTipText("Click this!!!!!!");*/
-
-            //JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Ajouter\".\nThe file path: " + filePath, "Ajouter", JOptionPane.PLAIN_MESSAGE);
-            //JOptionPane.showMessageDialog(null, linkFilePath);
-        }
-        else if (e.getSource() == btnModify){
-            JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Modifier\".\nLa copie commence !", "Modifier", JOptionPane.PLAIN_MESSAGE);
-
-
-        }
-        else if (e.getSource() == btnDelete){
-            JOptionPane.showMessageDialog(null, "Vous avez cliqué \"Supprimer\".", "Supprimer", JOptionPane.PLAIN_MESSAGE);
         }
     }
 }

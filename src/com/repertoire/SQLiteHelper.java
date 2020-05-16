@@ -92,28 +92,84 @@ public class SQLiteHelper {
         }
     }
 
-    public void update(String originalTitle, String year, String director, String secondTitle, String country, String filePath) {
-        String sql = "UPDATE films SET original_title = ?, " +
-                "year = ?, " +
-                "director = ?, " +
-                "second_title = ?, " +
-                "country = ?, " +
-                "file_path = ?";
+    public void modifyOneFilm(String originalTitle, String year, String director, String secondTitle, String country, String filePath){
+        String sqlUpdate = "UPDATE films SET 1 = 1 ";
+
+        List<String> parameters = new ArrayList<>();
+
+        if (!originalTitle.equals("")){
+            sqlUpdate += ", original_title = ? ";
+            parameters.add("title");
+        }
+
+        if (!year.equals("")){
+            sqlUpdate += ", year = ? ";
+            parameters.add("year");
+        }
+
+        if (!director.equals("")){
+            sqlUpdate += ", director = ? ";
+            parameters.add("director");
+        }
+
+        if (!secondTitle.equals("")){
+            sqlUpdate += ", second_title = ? ";
+            parameters.add("secondTitle");
+        }
+
+        if (!country.equals("")){
+            sqlUpdate += ", country = ? ";
+            parameters.add("country");
+        }
+
+        if (!filePath.equals("")){
+            sqlUpdate += ", film_path = ? ";
+            parameters.add("filePath");
+        }
+
+        // This clause needs to be developped more....
+        sqlUpdate += " WHERE 1 = 1 ";
 
         try (Connection conn = this.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql))
+            PreparedStatement pstmt = conn.prepareStatement(sqlUpdate))
         {
-            pstmt.setString(1, originalTitle);
-            //pstmt.setInt(2, year);
-            pstmt.setString(2, year);
-            pstmt.setString(3, director);
-            pstmt.setString(4, secondTitle);
-            pstmt.setString(5, country);
-            pstmt.setString(6, filePath);
+            int columnIndex = 0;
+
+            // set the value
+            if (parameters.contains("title")){
+                pstmt.setString(++columnIndex, originalTitle);
+                System.out.println("originalTitle = " + originalTitle);
+            }
+
+            if (parameters.contains("year")){
+                pstmt.setString(++columnIndex, year);
+                System.out.println("year = " + year);
+            }
+
+            if (parameters.contains("director")){
+                pstmt.setString(++columnIndex, director);
+                System.out.println("director = " + director);
+            }
+
+            if (parameters.contains("secondTitle")){
+                pstmt.setString(++columnIndex, secondTitle);
+                System.out.println("secondTitle = " + secondTitle);
+            }
+
+            if (parameters.contains("country")){
+                pstmt.setString(++columnIndex, country);
+                System.out.println("country = " + country);
+            }
+
+            if (parameters.contains("filePath")){
+                pstmt.setString(++columnIndex, filePath);
+                System.out.println("filePath = " + filePath);
+            }
+
+            // update
             pstmt.executeUpdate();
-        }
-        catch (SQLException e)
-        {
+
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -130,7 +186,9 @@ public class SQLiteHelper {
 
     public void searchByTitle(String titleOrSecondTitle, String year, String director, String country){
 
-        createJTable();
+        listFilms listFilms = new listFilms("test!");
+        listFilms.pack();
+        listFilms.setVisible(true);
 
         String sql = "SELECT * "
                 + "FROM films "
@@ -190,110 +248,20 @@ public class SQLiteHelper {
 
             // loop through the result set
             while (rs.next()) {
-                model.addRow(new Object[]{rs.getString("filmID"),
+                listFilms.refreshListFilms(rs.getString("filmID"),
                         rs.getString("original_title"),
                         rs.getString("year"),
                         rs.getString("director"),
                         rs.getString("second_title"),
                         rs.getString("country"),
-                        rs.getString("file_path")}
-                );
+                        rs.getString("file_path"));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        JOptionPane.showMessageDialog(null, scrollPane, "Liste des films trouvée.s", JOptionPane.PLAIN_MESSAGE);
-    }
-
-    private void createJTable() {
-        jtable = new JTable();
-        scrollPane = new JScrollPane(jtable);
-        scrollPane.setPreferredSize( new Dimension( 900, 500 ) );
-        String[] columns = {"filmID", "Titre Original", "Année", "Réalisateur", "Autre titre", "Pays", "Chemin du fichier"};
-        model = new DefaultTableModel();
-        jtable.setModel(model);
-
-        for (String column : columns) {
-            model.addColumn(column);
-        }
-
-        addListenerToJtable();
-    }//END createJTable()
-
-    private void addListenerToJtable() {
-        jtable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int row = jtable.rowAtPoint(new Point(e.getX(), e.getY()));
-                int col = jtable.columnAtPoint(new Point(e.getX(), e.getY()));
-                System.out.println(row + " " + col);
-
-                if (col == 6){
-                    //get the film's path
-                    String url = (String) jtable.getModel().getValueAt(row, col);
-                    System.out.println(url + " was clicked");
-
-                    // DO here what you want to do with your url
-                    int input = JOptionPane.showConfirmDialog(null,
-                            "Voulez-vous copier ce film ?",
-                            "Copier le film",
-                            JOptionPane.YES_NO_OPTION);
-
-                    //Yes
-                    if (input == 0){
-                        //get the directory's path
-                        JFileChooser fileChooser = new JFileChooser();
-                        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                        //Default: the USB key's path
-                        fileChooser.setCurrentDirectory(new File("H:\\"));
-                        int option = fileChooser.showOpenDialog(new JFrame());
-
-                        //After you choose a directory
-                        if(option == JFileChooser.APPROVE_OPTION){
-                            File file = fileChooser.getSelectedFile();
-                            System.out.println("Folder Selected: " + file.getAbsolutePath());
-                            //Dialog to confirm if you wish to proceed the copy
-                            int dialogCopyFilm = JOptionPane.showConfirmDialog(null,
-                                    "Voulez-vous faire la copie suivante ?\n" + url + "\n--> " + file.getAbsolutePath(),
-                                    "Copier le film",
-                                    JOptionPane.YES_NO_OPTION);
-                            //Yes
-                            if (dialogCopyFilm == 0){
-                                try
-                                {
-                                    SimpleDateFormat fileName = new SimpleDateFormat("yyyy-MM-dd_HH-mm_E");
-                                    String pathUsbAndFileName = file.getAbsolutePath() + "\\film_copié_" + fileName.format(Calendar.getInstance().getTime()) + "avi";
-                                    //copier le film
-                                    fileInOut(url, pathUsbAndFileName);
-                                    JOptionPane.showMessageDialog(null, "La copie est faite avec succès!");
-                                }
-                                catch (IOException ioException)
-                                {
-                                    ioException.printStackTrace();
-                                    JOptionPane.showMessageDialog(null, "La copie échouée...");
-                                }
-                            }
-                            //No
-                            else
-                            {
-                                JOptionPane.showMessageDialog(null, "La copie n'a pas été faite.");
-                            }
-                        }
-                        //You didn't chose the directory
-                        else
-                        {
-                            JOptionPane.showMessageDialog(null, "Le dossier n'a pas été choisi.");
-                        }
-                    }
-                    //No
-                    else{
-                        JOptionPane.showMessageDialog(null, "Le film n'a pas été copié.");
-                    }//END if (input == 0)
-                }//END if (col == 6)
-            }//END mouseClicked
-        });//END addMouseListener
-    }//END of addListenerToJtable()
+        //JOptionPane.showMessageDialog(null, scrollPane, "Liste des films trouvée.s", JOptionPane.PLAIN_MESSAGE);
+    }//END searchByTitle()
 
     public void fileInOut(String pathFileIn, String pathFileOut) throws IOException {
 

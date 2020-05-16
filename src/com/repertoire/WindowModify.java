@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 import static com.repertoire.Main.SQLite;
 
-public class WindowInsert extends JFrame implements ActionListener {
+public class WindowModify extends JFrame implements ActionListener {
 
     private JLabel labelTitle,
             labelYear,
@@ -21,13 +21,17 @@ public class WindowInsert extends JFrame implements ActionListener {
             fieldSecondTitle,
             fieldCountry,
             fieldFilmPath;
-    private JButton buttonFinish, buttonAdd, buttonRemoveAll;
+    private JButton buttonFinish, buttonModify, buttonRemoveAll;
     private Container container;
+    //private JFrame frame;
 
-    public WindowInsert(){
-        super("Ajout d'un film");
+    public WindowModify(){
+        super("Modifier les infos du film");
         container = getContentPane();
         container.setLayout(new GridLayout(8, 2, 6, 6));
+
+        /*frame = new JFrame();
+        frame.setLayout(new GridLayout(8, 2, 6, 6));*/
 
         createTitleLabelField();
         createYearLabelField();
@@ -37,26 +41,27 @@ public class WindowInsert extends JFrame implements ActionListener {
         createFilmPathLabelField();
 
         createButtonEnd();
-        createButtonAdd();
+        createButtonModify();
         createButtonRemoveAll();
 
         setSize(300, 250);
         setLocation(400, 400);
         setVisible(true);
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonFinish){
             dispose();
         }
-        else if (e.getSource() == buttonAdd){
-            SQLite.addOneFilm(fieldTitle.getText(),
+        else if (e.getSource() == buttonModify){
+            /*SQLite.modifyOneFilm(fieldTitle.getText(),
                     fieldYear.getText(),
                     fieldDirector.getText(),
                     fieldSecondTitle.getText(),
                     fieldCountry.getText(),
-                    fieldFilmPath.getText());
-            JOptionPane.showMessageDialog(null, "Un film a été ajouté !");
+                    fieldFilmPath.getText());*/
+            JOptionPane.showMessageDialog(null, "Une modification a été faite !");
             removeAllField();
         }
         else if (e.getSource() == buttonRemoveAll){
@@ -77,18 +82,21 @@ public class WindowInsert extends JFrame implements ActionListener {
         buttonRemoveAll = new JButton("Vider");
         buttonRemoveAll.addActionListener(this);
         container.add(buttonRemoveAll);
+//        frame.add(buttonRemoveAll);
     }
 
-    private void createButtonAdd() {
-        buttonAdd = new JButton("Ajouter");
-        buttonAdd.addActionListener(this);
-        container.add(buttonAdd);
+    private void createButtonModify() {
+        buttonModify = new JButton("Modifier");
+        buttonModify.addActionListener(this);
+        container.add(buttonModify);
+//        frame.add(buttonModify);
     }
 
     private void createButtonEnd() {
         buttonFinish = new JButton("Annuler");
         buttonFinish.addActionListener(this);
         container.add(buttonFinish);
+//        frame.add(buttonFinish);
     }
 
     private void createFilmPathLabelField(){
@@ -97,6 +105,8 @@ public class WindowInsert extends JFrame implements ActionListener {
         fieldFilmPath.addActionListener(this);
         container.add(labelFilmPath);
         container.add(fieldFilmPath);
+        /*frame.add(labelFilmPath);
+        frame.add(fieldFilmPath);*/
     }
 
     private void createCountryLabelField() {
@@ -105,6 +115,8 @@ public class WindowInsert extends JFrame implements ActionListener {
         fieldCountry.addActionListener(this);
         container.add(labelCountry);
         container.add(fieldCountry);
+        /*frame.add(labelCountry);
+        frame.add(fieldCountry);*/
     }
 
     private void createSecondTitleLabelField() {
@@ -113,6 +125,8 @@ public class WindowInsert extends JFrame implements ActionListener {
         fieldSecondTitle.addActionListener(this);
         container.add(labelSecondTitle);
         container.add(fieldSecondTitle);
+        /*frame.add(labelSecondTitle);
+        frame.add(fieldSecondTitle);*/
     }
 
     private void createDirectorLabelField() {
@@ -121,6 +135,8 @@ public class WindowInsert extends JFrame implements ActionListener {
         fieldDirector.addActionListener(this);
         container.add(labelDirector);
         container.add(fieldDirector);
+        /*frame.add(labelDirector);
+        frame.add(fieldDirector);*/
     }
 
     private void createYearLabelField() {
@@ -129,6 +145,8 @@ public class WindowInsert extends JFrame implements ActionListener {
         fieldYear.addActionListener(this);
         container.add(labelYear);
         container.add(fieldYear);
+        /*frame.add(labelYear);
+        frame.add(fieldYear);*/
     }
 
     private void createTitleLabelField() {
@@ -137,5 +155,7 @@ public class WindowInsert extends JFrame implements ActionListener {
         fieldTitle.addActionListener(this);
         container.add(labelTitle);
         container.add(fieldTitle);
+        /*frame.add(labelTitle);
+        frame.add(fieldTitle);*/
     }
 }

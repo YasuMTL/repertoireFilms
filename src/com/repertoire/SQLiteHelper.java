@@ -1,38 +1,24 @@
 package com.repertoire;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class SQLiteHelper {
     private String URL;
-    DefaultTableModel model;
-    JTable jtable;
-    JScrollPane scrollPane;
 
-    public SQLiteHelper(){
-        //
+    public SQLiteHelper(String dbName){
+        URL = "jdbc:sqlite:C:\\Users\\Yasunari\\Desktop\\" + dbName;
     }
 
-    public void createNewDB(String fileName){
-        //final String URL
-        URL = "jdbc:sqlite:C:\\Users\\Yasunari\\Desktop\\" + fileName;
-
+    public void createNewDB(){
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection(URL);
+            conn = this.connect();
             System.out.println("A new database has been created.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,9 +34,6 @@ public class SQLiteHelper {
     }//End createNewDB()
 
     public void createNewTable() {
-        // SQLite connection string
-        //String url = "jdbc:sqlite:C://sqlite/db/tests.db";
-
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS films (\n"
                 + "	filmID integer PRIMARY KEY,\n"
@@ -63,7 +46,7 @@ public class SQLiteHelper {
                 + "	capacity real\n"
                 + ");";
 
-        try (Connection conn = DriverManager.getConnection(URL);
+        try (Connection conn = this.connect();
              Statement stmt = conn.createStatement()) {
             // create a new table
             stmt.execute(sql);
@@ -92,13 +75,14 @@ public class SQLiteHelper {
         }
     }
 
-    public void modifyOneFilm(String originalTitle, String year, String director, String secondTitle, String country, String filePath){
-        String sqlUpdate = "UPDATE films SET 1 = 1 ";
+    public void modifyOneFilm(String filmIdSelected, String originalTitle, String year, String director, String secondTitle, String country, String filePath){
+        String sqlUpdate = "UPDATE films SET ";
 
         List<String> parameters = new ArrayList<>();
 
+        // original_title cannot be null, so this statement needs to be revised.
         if (!originalTitle.equals("")){
-            sqlUpdate += ", original_title = ? ";
+            sqlUpdate += "original_title = ? ";
             parameters.add("title");
         }
 
@@ -123,13 +107,15 @@ public class SQLiteHelper {
         }
 
         if (!filePath.equals("")){
-            sqlUpdate += ", film_path = ? ";
+            sqlUpdate += ", file_path = ? ";
             parameters.add("filePath");
         }
 
-        // This clause needs to be developped more....
-        sqlUpdate += " WHERE 1 = 1 ";
+        // This clause needs to be developed more....
+        //sqlUpdate += " WHERE 1 = 1 ";
+        sqlUpdate += " WHERE filmID = ? ";
 
+        //try (Connection conn = this.connect();
         try (Connection conn = this.connect();
             PreparedStatement pstmt = conn.prepareStatement(sqlUpdate))
         {
@@ -166,10 +152,15 @@ public class SQLiteHelper {
                 System.out.println("filePath = " + filePath);
             }
 
+            pstmt.setInt(++columnIndex, Integer.parseInt(filmIdSelected));
+            System.out.println("filmIdSelected = " + filmIdSelected);
+
             // update
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } catch (Error e){
             System.out.println(e.getMessage());
         }
     }

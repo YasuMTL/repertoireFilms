@@ -11,6 +11,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static com.repertoire.Main.dbName;
+
 public class listFilms extends JFrame implements ActionListener {
     private JPanel listFilms;
     private JTable jTableListFilms;
@@ -33,6 +35,8 @@ public class listFilms extends JFrame implements ActionListener {
 
     private JScrollPane scrollPane;
     private DefaultTableModel model;
+
+    private String filmIdSelected;
 
     public listFilms(String title){
         super(title);
@@ -79,6 +83,22 @@ public class listFilms extends JFrame implements ActionListener {
                 int row = jTableListFilms.rowAtPoint(new Point(e.getX(), e.getY()));
                 int col = jTableListFilms.columnAtPoint(new Point(e.getX(), e.getY()));
                 System.out.println(row + " " + col);
+
+                filmIdSelected = (String)jTableListFilms.getModel().getValueAt(row, 0);
+
+                //show the parametres in the textFields
+                String title = (String)jTableListFilms.getModel().getValueAt(row, 1),
+                        year = (String)jTableListFilms.getModel().getValueAt(row, 2),
+                        director = (String)jTableListFilms.getModel().getValueAt(row, 3),
+                        secondTitle = (String)jTableListFilms.getModel().getValueAt(row, 4),
+                        country = (String)jTableListFilms.getModel().getValueAt(row, 5),
+                        filmPath = (String)jTableListFilms.getModel().getValueAt(row, 6);
+                textFieldTitle.setText(title);
+                textFieldYear.setText(year);
+                textFieldDirector.setText(director);
+                textFieldSecondTitle.setText(secondTitle);
+                textFieldCountry.setText(country);
+                textFieldFilmPath.setText(filmPath);
 
                 if (col == 6){
                     //get the film's path
@@ -143,7 +163,7 @@ public class listFilms extends JFrame implements ActionListener {
                     }//END if (input == 0)
                 }
                 //If you click any other places than the column of file path
-                else{
+                /*else{
                     String[] options = {"Annuler", "Modifier", "Supprimer"};
                     int option = JOptionPane.showOptionDialog(null,
                             "Voulez-vous faire...?",
@@ -157,7 +177,7 @@ public class listFilms extends JFrame implements ActionListener {
 
                         case 1:
                             //JOptionPane.showMessageDialog(null, "Modifier");
-                            WindowModify windowModify = new WindowModify();
+                            WindowModify windowModify = new WindowModify(filmIdSelected);
                             break;
 
                         case 2:
@@ -166,7 +186,7 @@ public class listFilms extends JFrame implements ActionListener {
 
                         default:
                     }//END of switch
-                }//END if
+                }//END if*/
 
             }//END mouseClicked
 
@@ -191,8 +211,10 @@ public class listFilms extends JFrame implements ActionListener {
         }
         else if(e.getSource() == buttonModify)
         {
-            SQLiteHelper sql = new SQLiteHelper();
-            sql.modifyOneFilm(textFieldTitle.getText(),
+            SQLiteHelper sql = new SQLiteHelper(dbName);
+
+            sql.modifyOneFilm(filmIdSelected,
+                    textFieldTitle.getText(),
                     textFieldYear.getText(),
                     textFieldDirector.getText(),
                     textFieldSecondTitle.getText(),

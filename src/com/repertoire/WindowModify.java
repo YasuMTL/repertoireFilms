@@ -23,10 +23,14 @@ public class WindowModify extends JFrame implements ActionListener {
             fieldFilmPath;
     private JButton buttonFinish, buttonModify, buttonRemoveAll;
     private Container container;
+    private String filmID;
     //private JFrame frame;
 
-    public WindowModify(){
+    public WindowModify(String filmIDselected){
         super("Modifier les infos du film");
+        //This needs to modify a specific record in SQLite
+        filmID = filmIDselected;
+
         container = getContentPane();
         container.setLayout(new GridLayout(8, 2, 6, 6));
 
@@ -55,12 +59,13 @@ public class WindowModify extends JFrame implements ActionListener {
             dispose();
         }
         else if (e.getSource() == buttonModify){
-            /*SQLite.modifyOneFilm(fieldTitle.getText(),
+            SQLite.modifyOneFilm(filmID,
+                    fieldTitle.getText(),
                     fieldYear.getText(),
                     fieldDirector.getText(),
                     fieldSecondTitle.getText(),
                     fieldCountry.getText(),
-                    fieldFilmPath.getText());*/
+                    fieldFilmPath.getText());
             JOptionPane.showMessageDialog(null, "Une modification a été faite !");
             removeAllField();
         }

@@ -1,8 +1,13 @@
 package com.repertoire;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.repertoire.Main.dbName;
 
 public class SQLiteHelper {
     private String URL;
@@ -51,6 +56,26 @@ public class SQLiteHelper {
             System.out.println(e.getMessage());
         }
     }//END of createNewTable()
+
+    public void backUpDB() throws IOException {
+        FileInputStream fileIn = new FileInputStream("C:\\Users\\Yasunari\\Desktop\\" + dbName);
+        FileOutputStream fileOut = new FileOutputStream("C:\\Users\\Yasunari\\Desktop\\" + "backup_" + dbName);
+
+        byte[] buf = new byte[256];
+        int len;
+
+        // ファイルの終わりまで読み込む
+        while((len = fileIn.read(buf)) != -1){
+            fileOut.write(buf);
+        }
+
+        //ファイルに内容を書き込む
+        fileOut.flush();
+
+        //ファイルの終了処理
+        fileOut.close();
+        fileIn.close();
+    }
 
     public void addOneFilm(String originalTitle, String year, String director, String secondTitle, String country, String filePath) {
         String sqlAdd = "INSERT INTO films (original_title, year, director, second_title, country, file_path) VALUES(?,?,?,?,?,?)";

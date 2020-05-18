@@ -13,8 +13,6 @@ public class Main extends JFrame implements ActionListener {
     public static SQLiteHelper SQLite;
     public static String dbName = "test_1.db";
 
-    String filePath;
-
     public static void main(String[] args){
         EventQueue.invokeLater
                 (() -> {
@@ -47,9 +45,6 @@ public class Main extends JFrame implements ActionListener {
         menuBar.add(menuInsert);
         window.setJMenuBar(menuBar);
         window.setSize(400, 400);
-
-        //test
-        filePath = "C:\\Users\\Yasunari\\Desktop\\repertoireFilms.xlsx";
 
         btnSearch.addActionListener(this);
         btnInsert.addActionListener(this);

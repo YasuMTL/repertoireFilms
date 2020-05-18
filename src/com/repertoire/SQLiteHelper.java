@@ -185,7 +185,7 @@ public class SQLiteHelper {
 
     public void searchByTitle(String titleOrSecondTitle, String year, String director, String country){
 
-        listFilms listFilms = new listFilms("test!");
+        listFilms listFilms = new listFilms("Liste des films cherchés");
         listFilms.pack();
         listFilms.setVisible(true);
 
@@ -258,6 +258,5 @@ public class SQLiteHelper {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        //JOptionPane.showMessageDialog(null, scrollPane, "Liste des films trouvée.s", JOptionPane.PLAIN_MESSAGE);
     }//END searchByTitle()
 }

@@ -113,7 +113,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="Annuler"/>
+          <text value="Retourner"/>
         </properties>
       </component>
       <component id="c3789" class="javax.swing.JTextField" binding="textFieldYear">

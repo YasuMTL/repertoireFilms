@@ -1,8 +1,5 @@
 package com.repertoire;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +65,8 @@ public class SQLiteHelper {
             pstmt.setString(5, country);
             pstmt.setString(6, filePath);
             pstmt.executeUpdate();
+
+            conn.close();
         }
         catch (SQLException e)
         {
@@ -75,16 +74,29 @@ public class SQLiteHelper {
         }
     }
 
+    public void removeOneFilm(String filmIdSelected){
+        String sqlUpdate = "DELETE FROM films WHERE filmID = ?";
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sqlUpdate))
+        {
+            // set the value
+            pstmt.setInt(1, Integer.parseInt(filmIdSelected));
+            System.out.println("filmIdSelected = " + filmIdSelected);
+            // update
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } catch (Error e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void modifyOneFilm(String filmIdSelected, String originalTitle, String year, String director, String secondTitle, String country, String filePath){
-        String sqlUpdate = "UPDATE films SET ";
+        String sqlUpdate = "UPDATE films SET original_title = ?";
 
         List<String> parameters = new ArrayList<>();
-
-        // original_title cannot be null, so this statement needs to be revised.
-        if (!originalTitle.equals("")){
-            sqlUpdate += "original_title = ? ";
-            parameters.add("title");
-        }
 
         if (!year.equals("")){
             sqlUpdate += ", year = ? ";
@@ -111,21 +123,17 @@ public class SQLiteHelper {
             parameters.add("filePath");
         }
 
-        // This clause needs to be developed more....
-        //sqlUpdate += " WHERE 1 = 1 ";
         sqlUpdate += " WHERE filmID = ? ";
 
-        //try (Connection conn = this.connect();
         try (Connection conn = this.connect();
             PreparedStatement pstmt = conn.prepareStatement(sqlUpdate))
         {
-            int columnIndex = 0;
+            //first parameter = original_title
+            int columnIndex = 1;
 
             // set the value
-            if (parameters.contains("title")){
-                pstmt.setString(++columnIndex, originalTitle);
-                System.out.println("originalTitle = " + originalTitle);
-            }
+            pstmt.setString(1, originalTitle);
+            System.out.println("originalTitle = " + originalTitle);
 
             if (parameters.contains("year")){
                 pstmt.setString(++columnIndex, year);
@@ -250,34 +258,6 @@ public class SQLiteHelper {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
         //JOptionPane.showMessageDialog(null, scrollPane, "Liste des films trouvée.s", JOptionPane.PLAIN_MESSAGE);
     }//END searchByTitle()
-
-    public void fileInOut(String pathFileIn, String pathFileOut) throws IOException {
-
-        //FileInputStreamのオブジェクトを生成する
-        //FileInputStream fileIn = new FileInputStream("C:\\Users\\Yasunari\\Desktop\\S1 - 21 [1080p].mkv");
-        FileInputStream fileIn = new FileInputStream(pathFileIn);
-
-        //FileOutputStreamのオブジェクトを生成する
-        //FileOutputStream fileOut = new FileOutputStream("C:\\Users\\Yasunari\\Desktop\\Copied_S1 - 21 [1080p].mkv");
-        FileOutputStream fileOut = new FileOutputStream(pathFileOut);
-
-        // byte型の配列を宣言
-        byte[] buf = new byte[256];
-        int len;
-
-        // ファイルの終わりまで読み込む
-        while((len = fileIn.read(buf)) != -1){
-            fileOut.write(buf);
-        }
-
-        //ファイルに内容を書き込む
-        fileOut.flush();
-
-        //ファイルの終了処理
-        fileOut.close();
-        fileIn.close();
-    }
 }

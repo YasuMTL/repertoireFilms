@@ -8,6 +8,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -131,19 +134,19 @@ public class listFilms extends JFrame implements ActionListener {
                                     JOptionPane.YES_NO_OPTION);
                             //Yes
                             if (dialogCopyFilm == 0){
-                                /*try
-                                {*/
+                                try
+                                {
                                     SimpleDateFormat fileName = new SimpleDateFormat("yyyy-MM-dd_HH-mm_E");
                                     String pathUsbAndFileName = file.getAbsolutePath() + "\\film_copié_" + fileName.format(Calendar.getInstance().getTime()) + "avi";
                                     //copier le film
-                                    //fileInOut(url, pathUsbAndFileName);
+                                    fileInOut(url, pathUsbAndFileName);
                                     JOptionPane.showMessageDialog(null, "La copie est faite avec succès!");
-                                /*}
+                                }
                                 catch (IOException ioException)
                                 {
                                     ioException.printStackTrace();
                                     JOptionPane.showMessageDialog(null, "La copie échouée...");
-                                }*/
+                                }
                             }
                             //No
                             else
@@ -161,33 +164,7 @@ public class listFilms extends JFrame implements ActionListener {
                     else{
                         JOptionPane.showMessageDialog(null, "Le film n'a pas été copié.");
                     }//END if (input == 0)
-                }
-                //If you click any other places than the column of file path
-                /*else{
-                    String[] options = {"Annuler", "Modifier", "Supprimer"};
-                    int option = JOptionPane.showOptionDialog(null,
-                            "Voulez-vous faire...?",
-                            "Modifier/Supprimer",
-                            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-
-                    switch (option){
-                        case 0:
-                            JOptionPane.showMessageDialog(null, "Annuler");
-                            break;
-
-                        case 1:
-                            //JOptionPane.showMessageDialog(null, "Modifier");
-                            WindowModify windowModify = new WindowModify(filmIdSelected);
-                            break;
-
-                        case 2:
-                            JOptionPane.showMessageDialog(null, "Supprimer");
-                            break;
-
-                        default:
-                    }//END of switch
-                }//END if*/
-
+                }//END if
             }//END mouseClicked
 
         });//END addMouseListener
@@ -223,7 +200,35 @@ public class listFilms extends JFrame implements ActionListener {
         }
         else if (e.getSource() == buttonRemove)
         {
-
+            SQLiteHelper sql = new SQLiteHelper(dbName);
+            sql.removeOneFilm(filmIdSelected);
         }
+    }
+
+    public void fileInOut(String pathFileIn, String pathFileOut) throws IOException {
+
+        //FileInputStreamのオブジェクトを生成する
+        //FileInputStream fileIn = new FileInputStream("C:\\Users\\Yasunari\\Desktop\\S1 - 21 [1080p].mkv");
+        FileInputStream fileIn = new FileInputStream(pathFileIn);
+
+        //FileOutputStreamのオブジェクトを生成する
+        //FileOutputStream fileOut = new FileOutputStream("C:\\Users\\Yasunari\\Desktop\\Copied_S1 - 21 [1080p].mkv");
+        FileOutputStream fileOut = new FileOutputStream(pathFileOut);
+
+        // byte型の配列を宣言
+        byte[] buf = new byte[256];
+        int len;
+
+        // ファイルの終わりまで読み込む
+        while((len = fileIn.read(buf)) != -1){
+            fileOut.write(buf);
+        }
+
+        //ファイルに内容を書き込む
+        fileOut.flush();
+
+        //ファイルの終了処理
+        fileOut.close();
+        fileIn.close();
     }
 }

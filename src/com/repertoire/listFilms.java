@@ -224,6 +224,8 @@ public class listFilms extends JFrame implements ActionListener {
         {
             SQLiteHelper sql = new SQLiteHelper(dbName);
             sql.removeOneFilm(filmIdSelected);
+            JOptionPane.showMessageDialog(this, "La supression a été faite !");
+            dispose();
         }
     }
 

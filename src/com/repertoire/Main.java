@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class Main extends JFrame implements ActionListener {
     private JButton btnSearch, btnInsert;
@@ -11,7 +12,7 @@ public class Main extends JFrame implements ActionListener {
     private JMenu menuSearch, menuInsert;
     private JPanel panel;
     public static SQLiteHelper SQLite;
-    public static String dbName = "test_1.db";
+    public static String dbName = "films.db";
 
     public static void main(String[] args){
         EventQueue.invokeLater
@@ -19,6 +20,11 @@ public class Main extends JFrame implements ActionListener {
                     SQLite = new SQLiteHelper(dbName);
                     SQLite.createNewDB();
                     SQLite.createNewTable();
+                    try {
+                        SQLite.backUpDB();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
 
                     //read the file
                     /*try {

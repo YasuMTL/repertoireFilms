@@ -40,6 +40,7 @@ public class listFilms extends JFrame implements ActionListener {
     private DefaultTableModel model;
 
     private String filmIdSelected;
+    //private int numRows;
 
     public listFilms(String title){
         super(title);
@@ -50,7 +51,9 @@ public class listFilms extends JFrame implements ActionListener {
         buttonBack.addActionListener(this);
 
         String[] columns = {"filmID", "Titre Original", "Année", "Réalisateur", "Autre titre", "Pays", "Chemin du fichier"};
-        model = new DefaultTableModel();
+        //model = new DefaultTableModel();
+        model = (DefaultTableModel) jTableListFilms.getModel();
+        //numRows = 0;
 
         for (String column : columns) {
             model.addColumn(column);
@@ -76,6 +79,7 @@ public class listFilms extends JFrame implements ActionListener {
                 country,
                 filmPath}
         );
+        //numRows++;
     }
 
     private void addListenerToJtable() {
@@ -190,13 +194,31 @@ public class listFilms extends JFrame implements ActionListener {
         {
             SQLiteHelper sql = new SQLiteHelper(dbName);
 
+            String newTitle = textFieldTitle.getText(),
+                    newYear = textFieldYear.getText(),
+                    newDirector = textFieldDirector.getText(),
+                    newSecondTitle = textFieldSecondTitle.getText(),
+                    newCountry = textFieldCountry.getText(),
+                    newFilmPath = textFieldFilmPath.getText();
+
             sql.modifyOneFilm(filmIdSelected,
-                    textFieldTitle.getText(),
-                    textFieldYear.getText(),
-                    textFieldDirector.getText(),
-                    textFieldSecondTitle.getText(),
-                    textFieldCountry.getText(),
-                    textFieldFilmPath.getText());
+                    newTitle,
+                    newYear,
+                    newDirector,
+                    newSecondTitle,
+                    newCountry,
+                    newFilmPath);
+
+            //model.fireTableDataChanged();
+            //model.fireTableRowsUpdated(1, numRows);
+            model.setValueAt(newTitle, jTableListFilms.getSelectedRow(), 1);
+            model.setValueAt(newYear, jTableListFilms.getSelectedRow(), 2);
+            model.setValueAt(newDirector, jTableListFilms.getSelectedRow(), 3);
+            model.setValueAt(newSecondTitle, jTableListFilms.getSelectedRow(), 4);
+            model.setValueAt(newCountry, jTableListFilms.getSelectedRow(), 5);
+            model.setValueAt(newFilmPath, jTableListFilms.getSelectedRow(), 6);
+
+            JOptionPane.showMessageDialog(this, "La mise à jour a été faite !");
         }
         else if (e.getSource() == buttonRemove)
         {
@@ -204,6 +226,40 @@ public class listFilms extends JFrame implements ActionListener {
             sql.removeOneFilm(filmIdSelected);
         }
     }
+
+    // To notify jTable that data has changed
+    /*public void setUpTableData() {
+        DefaultTableModel tableModel = (DefaultTableModel) jTableListFilms.getModel();
+
+        *//**
+         * additional code.
+         **//*
+        tableModel.setRowCount(0);
+        *//**//*
+        ArrayList<Contact> list = new ArrayList<Contact>();
+        if (!con.equals(""))
+            list = sql.getContactListsByGroup(con);
+        else
+            list = sql.getContactLists();
+        for (int i = 0; i < list.size(); i++) {
+            String[] data = new String[7];
+
+            data[0] = list.get(i).getName();
+            data[1] = list.get(i).getEmail();
+            data[2] = list.get(i).getPhone1();
+            data[3] = list.get(i).getPhone2();
+            data[4] = list.get(i).getGroup();
+            data[5] = list.get(i).getId();
+
+            tableModel.addRow(data);
+        }
+        jTable.setModel(tableModel);
+        *//**
+         * additional code.
+         **//*
+        tableModel.fireTableDataChanged();
+        *//**//*
+    }*/
 
     public void fileInOut(String pathFileIn, String pathFileOut) throws IOException {
 

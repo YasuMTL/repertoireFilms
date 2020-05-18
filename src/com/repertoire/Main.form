@@ -19,18 +19,6 @@
           <text value="Ajouter"/>
         </properties>
       </component>
-      <component id="873f7" class="javax.swing.JButton" binding="btnModify">
-        <constraints/>
-        <properties>
-          <text value="Modifier"/>
-        </properties>
-      </component>
-      <component id="b875a" class="javax.swing.JButton" binding="btnDelete">
-        <constraints/>
-        <properties>
-          <text value="Supprimer"/>
-        </properties>
-      </component>
     </children>
   </grid>
 </form>

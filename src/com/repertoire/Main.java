@@ -20,6 +20,7 @@ public class Main extends JFrame implements ActionListener {
                     SQLite = new SQLiteHelper(dbName);
                     SQLite.createNewDB();
                     SQLite.createNewTable();
+                    //backup the database
                     try {
                         SQLite.backUpDB();
                     }catch (IOException e){

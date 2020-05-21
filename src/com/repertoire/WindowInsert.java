@@ -40,8 +40,8 @@ public class WindowInsert extends JFrame implements ActionListener {
         createButtonAdd();
         createButtonRemoveAll();
 
-        setSize(300, 250);
-        setLocation(400, 400);
+        setSize(350, 300);
+        setLocationRelativeTo(null);
         setVisible(true);
     }
     @Override
@@ -86,7 +86,7 @@ public class WindowInsert extends JFrame implements ActionListener {
     }
 
     private void createButtonEnd() {
-        buttonFinish = new JButton("Annuler");
+        buttonFinish = new JButton("Terminer");
         buttonFinish.addActionListener(this);
         container.add(buttonFinish);
     }

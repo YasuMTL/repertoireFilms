@@ -34,8 +34,10 @@ public class WindowSearch extends JFrame implements ActionListener {
         createButtonSearch();
         createButtonRemoveAll();
 
-        setSize(300, 250);
-        setLocation(400, 400);
+        setSize(350, 300);
+        //setPreferredSize(new Dimension(400, 300));
+        //setLocation(400, 400);
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 

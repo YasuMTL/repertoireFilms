@@ -12,6 +12,7 @@ public class Read {
 
     static void readFile() throws IOException {
         String entryLine, originalTitle, year, director, secondTitle, country, filePath;
+        //manual conversion: xlsx file --> csv file --> txt file
         BufferedReader entryFile = new BufferedReader(
                                         new FileReader("data.txt")
                                    );

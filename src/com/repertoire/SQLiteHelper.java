@@ -10,10 +10,13 @@ import java.util.List;
 import static com.repertoire.Main.dbName;
 
 public class SQLiteHelper {
-    private String URL;
+    private final String URL;
 
-    public SQLiteHelper(String dbName){
+    /*public SQLiteHelper(String dbName){
         URL = "jdbc:sqlite:C:\\Users\\Yasunari\\Desktop\\" + dbName;
+    }*/
+    public SQLiteHelper(String dbName){
+        URL = "jdbc:sqlite:E:\\Films Alexe\\Répertoire\\" + dbName;
     }
 
     public void createNewDB(){
@@ -58,8 +61,10 @@ public class SQLiteHelper {
     }//END of createNewTable()
 
     public void backUpDB() throws IOException {
-        FileInputStream fileIn = new FileInputStream("C:\\Users\\Yasunari\\Desktop\\" + dbName);
-        FileOutputStream fileOut = new FileOutputStream("C:\\Users\\Yasunari\\Desktop\\" + "backup_" + dbName);
+        /*FileInputStream fileIn = new FileInputStream("C:\\Users\\Yasunari\\Desktop\\" + dbName);
+        FileOutputStream fileOut = new FileOutputStream("C:\\Users\\Yasunari\\Desktop\\" + "backup_" + dbName);*/
+        FileInputStream fileIn = new FileInputStream("E:\\Films Alexe\\Répertoire\\" + dbName);
+        FileOutputStream fileOut = new FileOutputStream("E:\\Films Alexe\\Répertoire\\" + "backup_" + dbName);
 
         byte[] buf = new byte[256];
         int len;
@@ -112,8 +117,6 @@ public class SQLiteHelper {
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } catch (Error e){
             System.out.println(e.getMessage());
         }
     }
@@ -192,8 +195,6 @@ public class SQLiteHelper {
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } catch (Error e){
             System.out.println(e.getMessage());
         }
     }

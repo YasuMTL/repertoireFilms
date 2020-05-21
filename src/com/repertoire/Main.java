@@ -34,12 +34,13 @@ public class Main extends JFrame implements ActionListener {
                         e.printStackTrace();
                     }*/
 
-                    JFrame frameTest = new JFrame("Répertoire de films");
-                    frameTest.setContentPane(new Main().panel);
-                    frameTest.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    frameTest.setLocationRelativeTo(null);
-                    frameTest.pack();
-                    frameTest.setVisible(true);
+                    JFrame frameFilms = new JFrame("Répertoire de films");
+                    frameFilms.setContentPane(new Main().panel);
+                    frameFilms.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    frameFilms.setLocationRelativeTo(null);
+                    frameFilms.setPreferredSize(new Dimension(300, 80));
+                    frameFilms.pack();
+                    frameFilms.setVisible(true);
                 });
     }
 

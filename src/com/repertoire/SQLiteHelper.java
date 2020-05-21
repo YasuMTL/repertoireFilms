@@ -11,12 +11,18 @@ import static com.repertoire.Main.dbName;
 
 public class SQLiteHelper {
     private final String URL;
-
-    /*public SQLiteHelper(String dbName){
-        URL = "jdbc:sqlite:C:\\Users\\Yasunari\\Desktop\\" + dbName;
-    }*/
     public SQLiteHelper(String dbName){
         URL = "jdbc:sqlite:E:\\Films Alexe\\Répertoire\\" + dbName;
+    }
+
+    private Connection connect() {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(URL);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return conn;
     }
 
     public void createNewDB(){
@@ -61,8 +67,6 @@ public class SQLiteHelper {
     }//END of createNewTable()
 
     public void backUpDB() throws IOException {
-        /*FileInputStream fileIn = new FileInputStream("C:\\Users\\Yasunari\\Desktop\\" + dbName);
-        FileOutputStream fileOut = new FileOutputStream("C:\\Users\\Yasunari\\Desktop\\" + "backup_" + dbName);*/
         FileInputStream fileIn = new FileInputStream("E:\\Films Alexe\\Répertoire\\" + dbName);
         FileOutputStream fileOut = new FileOutputStream("E:\\Films Alexe\\Répertoire\\" + "backup_" + dbName);
 
@@ -197,16 +201,6 @@ public class SQLiteHelper {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    private Connection connect() {
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(URL);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return conn;
     }
 
     public void searchByTitle(String titleOrSecondTitle, String year, String director, String country){

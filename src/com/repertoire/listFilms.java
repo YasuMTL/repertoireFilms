@@ -62,6 +62,7 @@ public class listFilms extends JFrame implements ActionListener {
         addListenerToJtable();
 
         this.setContentPane(listFilms);
+        this.setPreferredSize(new Dimension(1200, 400));
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);

@@ -37,7 +37,7 @@ public class listFilms extends JFrame implements ActionListener {
     private JTextField textFieldFilmPath;
 
     private JScrollPane scrollPane;
-    private DefaultTableModel model;
+    private final DefaultTableModel model;
 
     private String filmIdSelected;
 
@@ -65,8 +65,6 @@ public class listFilms extends JFrame implements ActionListener {
     }//END of constructor
 
     private void setColumnTitles(String[] columnTitles) {
-        //String[] columns = {"filmID", "Titre Original", "Année", "Réalisateur", "Autre titre", "Pays", "Chemin du fichier"};
-
         for (String column : columnTitles) {
             model.addColumn(column);
         }
@@ -232,27 +230,18 @@ public class listFilms extends JFrame implements ActionListener {
 
     public void fileInOut(String pathFileIn, String pathFileOut) throws IOException {
 
-        //FileInputStreamのオブジェクトを生成する
-        //FileInputStream fileIn = new FileInputStream("C:\\Users\\Yasunari\\Desktop\\S1 - 21 [1080p].mkv");
         FileInputStream fileIn = new FileInputStream(pathFileIn);
-
-        //FileOutputStreamのオブジェクトを生成する
-        //FileOutputStream fileOut = new FileOutputStream("C:\\Users\\Yasunari\\Desktop\\Copied_S1 - 21 [1080p].mkv");
         FileOutputStream fileOut = new FileOutputStream(pathFileOut);
 
-        // byte型の配列を宣言
-        byte[] buf = new byte[256];
+        byte[] buffer = new byte[256];
         int len;
 
-        // ファイルの終わりまで読み込む
-        while((len = fileIn.read(buf)) != -1){
-            fileOut.write(buf);
+        while((len = fileIn.read(buffer)) != -1){
+            fileOut.write(buffer);
         }
 
-        //ファイルに内容を書き込む
         fileOut.flush();
 
-        //ファイルの終了処理
         fileOut.close();
         fileIn.close();
     }

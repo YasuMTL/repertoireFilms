@@ -1,7 +1,6 @@
 package com.repertoire;
 
 import javax.swing.*;
-import javax.xml.transform.Result;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -123,15 +122,8 @@ public class SQLiteHelper {
             for (String column : columnTitles) {
                 pstmt.setString(index++, column);
             }
-            /*pstmt.setString(1, originalTitle);
-            pstmt.setString(2, year);
-            pstmt.setString(3, director);
-            pstmt.setString(4, secondTitle);
-            pstmt.setString(5, country);
-            pstmt.setString(6, filePath);*/
-            pstmt.executeUpdate();
 
-            conn.close();
+            pstmt.executeUpdate();
         }
         catch (SQLException e)
         {
@@ -177,8 +169,6 @@ public class SQLiteHelper {
             pstmt.setString(5, country);
             pstmt.setString(6, filePath);
             pstmt.executeUpdate();
-
-            conn.close();
         }
         catch (SQLException e)
         {

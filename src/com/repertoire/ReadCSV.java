@@ -8,11 +8,11 @@ import java.io.IOException;
 
 import static com.repertoire.Main.SQLite;
 
-public class Read {
+public class ReadCSV {
     private String[] columnTitles;
 
     //Empty constructor
-    Read(){}
+    ReadCSV(){}
 
     void readCsvFile() throws IOException {
         String line, originalTitle, year, director, secondTitle, country, filePath;

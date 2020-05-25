@@ -156,6 +156,27 @@ public class SQLiteHelper {
         return columnTitles;
     }
 
+    public int getNumLines(){
+        int numLines = 0;
+        String sql = "SELECT * FROM films";
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            ResultSet rs  = pstmt.executeQuery();
+
+            // count all the records in the films table
+            while (rs.next()) {
+                numLines++;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            //JOptionPane.showMessageDialog(null, "Vous avez besoin de charger un fichier CSV !");
+        }
+
+        return numLines;
+    }
+
     public void addOneFilm(String originalTitle, String year, String director, String secondTitle, String country, String filePath) {
         String sqlAdd = "INSERT INTO films (original_title, year, director, second_title, country, file_path) VALUES(?,?,?,?,?,?)";
 
@@ -363,4 +384,39 @@ public class SQLiteHelper {
             System.out.println(e.getMessage());
         }
     }//END searchByTitle()
+
+    public String[][] getAllLines(){
+        //prepare an array at the length of column titles
+        String[][] allLines = new String[getNumLines()][getColumnTitles().length];
+        int linePosition = 0;
+
+        String sql = "SELECT * FROM films";
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            ResultSet rs  = pstmt.executeQuery();
+
+            int columnPosition;
+
+            while (rs.next()) {
+                columnPosition = 0;
+
+                allLines[linePosition][columnPosition++] = rs.getString("filmID");
+                allLines[linePosition][columnPosition++] = rs.getString("original_title");
+                allLines[linePosition][columnPosition++] = rs.getString("year");
+                allLines[linePosition][columnPosition++] = rs.getString("director");
+                allLines[linePosition][columnPosition++] = rs.getString("second_title");
+                allLines[linePosition][columnPosition++] = rs.getString("country");
+                allLines[linePosition][columnPosition++] = rs.getString("file_path");
+
+                linePosition++;
+                System.out.println(linePosition);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return allLines;
+    }
 }

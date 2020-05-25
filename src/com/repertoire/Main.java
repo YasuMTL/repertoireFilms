@@ -6,15 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import static com.repertoire.Read.readFile;
-
 public class Main extends JFrame implements ActionListener {
     private JButton btnSearch, btnInsert, btnRead;
     private JFrame window;
     private JMenu menuSearch, menuInsert, menuRead;
     private JPanel panel;
     public static SQLiteHelper SQLite;
-    public static String dbName = "filmsTest.db";
+    public static String dbName = "films.db";
 
     public static void main(String[] args){
         EventQueue.invokeLater
@@ -22,6 +20,7 @@ public class Main extends JFrame implements ActionListener {
                     SQLite = new SQLiteHelper(dbName);
                     SQLite.createNewDB();
                     SQLite.createNewTable();
+                    SQLite.createNewTableForColumnTitles();
                     //backup the database
                     try {
                         SQLite.backUpDB();
@@ -70,9 +69,13 @@ public class Main extends JFrame implements ActionListener {
                     JOptionPane.YES_NO_OPTION);
             //Yes
             if (dialogReadCsv == 0){
+                SQLite.clearUpTable();
+                Read load = new Read();
                 //read a csv file
                 try {
-                    readFile();
+                    load.readCsvFile();
+                    String[] titles = load.getColumnTitles();
+                    SQLite.addColumnTitles(titles);
                 } catch (IOException ie) {
                     ie.printStackTrace();
                 }

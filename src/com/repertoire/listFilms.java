@@ -41,7 +41,7 @@ public class listFilms extends JFrame implements ActionListener {
 
     private String filmIdSelected;
 
-    public listFilms(String title){
+    public listFilms(String title, String[] columnTitles){
         super(title);
 
         buttonModify.addActionListener(this);
@@ -49,13 +49,9 @@ public class listFilms extends JFrame implements ActionListener {
         buttonClear.addActionListener(this);
         buttonBack.addActionListener(this);
 
-        String[] columns = {"filmID", "Titre Original", "Année", "Réalisateur", "Autre titre", "Pays", "Chemin du fichier"};
-        //model = new DefaultTableModel();
         model = (DefaultTableModel) jTableListFilms.getModel();
 
-        for (String column : columns) {
-            model.addColumn(column);
-        }
+        setColumnTitles(columnTitles);
 
         jTableListFilms.setModel(model);
 
@@ -67,6 +63,14 @@ public class listFilms extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }//END of constructor
+
+    private void setColumnTitles(String[] columnTitles) {
+        //String[] columns = {"filmID", "Titre Original", "Année", "Réalisateur", "Autre titre", "Pays", "Chemin du fichier"};
+
+        for (String column : columnTitles) {
+            model.addColumn(column);
+        }
+    }
 
     public void refreshListFilms(String filmID, String title, String year, String director, String secondTitle, String country, String filmPath){
         model.addRow(new Object[]{
@@ -91,7 +95,7 @@ public class listFilms extends JFrame implements ActionListener {
 
                 filmIdSelected = (String)jTableListFilms.getModel().getValueAt(row, 0);
 
-                //show the parametres in the textFields
+                //show the parameters in the textFields
                 String title = (String)jTableListFilms.getModel().getValueAt(row, 1),
                         year = (String)jTableListFilms.getModel().getValueAt(row, 2),
                         director = (String)jTableListFilms.getModel().getValueAt(row, 3),

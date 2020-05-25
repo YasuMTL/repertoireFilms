@@ -9,7 +9,7 @@ import java.io.IOException;
 public class Main extends JFrame implements ActionListener {
     private JButton btnSearch, btnInsert, btnRead;
     private JFrame window;
-    private JMenu menuSearch, menuInsert, menuRead;
+    private JMenu menuSearch, menuInsert;
     private JPanel panel;
     public static SQLiteHelper SQLite;
     public static String dbName = "films.db";
@@ -43,7 +43,6 @@ public class Main extends JFrame implements ActionListener {
         JMenuBar menuBar = new JMenuBar();
         menuSearch = new JMenu("Rechercher");
         menuInsert = new JMenu("Ajouter");
-        menuRead = new JMenu("Charger d'un fichier CSV");
         menuBar.add(menuSearch);
         menuBar.add(menuInsert);
         window.setJMenuBar(menuBar);

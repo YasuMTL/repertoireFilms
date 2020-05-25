@@ -19,6 +19,12 @@
           <text value="Ajouter"/>
         </properties>
       </component>
+      <component id="610f2" class="javax.swing.JButton" binding="btnRead">
+        <constraints/>
+        <properties>
+          <text value="Charger des données"/>
+        </properties>
+      </component>
     </children>
   </grid>
 </form>

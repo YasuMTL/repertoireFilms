@@ -1,5 +1,6 @@
 package com.repertoire;
 
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -66,24 +67,93 @@ public class SQLiteHelper {
         }
     }//END of createNewTable()
 
+    public void createNewTableForColumnTitles() {
+        // SQL statement for creating a new table
+        String sql = "CREATE TABLE IF NOT EXISTS titles (\n"
+                + "	filmID text NOT NULL,\n"
+                + "	original_title text NOT NULL,\n"
+                + "	year text NOT NULL,\n"
+                + "	director text NOT NULL,\n"
+                + "	second_title text NOT NULL,\n"
+                + "	country text NOT NULL,\n"
+                + "	file_path text NOT NULL,\n"
+                + "	capacity real\n"
+                + ");";
+
+        try (Connection conn = this.connect();
+             Statement stmt = conn.createStatement()) {
+            // create a new table
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }//END of createNewTableForColumnTitles()
+
     public void backUpDB() throws IOException {
         FileInputStream fileIn = new FileInputStream("E:\\Films Alexe\\Répertoire\\" + dbName);
         FileOutputStream fileOut = new FileOutputStream("E:\\Films Alexe\\Répertoire\\" + "backup_" + dbName);
 
-        byte[] buf = new byte[256];
+        byte[] buffer = new byte[256];
         int len;
 
-        // ファイルの終わりまで読み込む
-        while((len = fileIn.read(buf)) != -1){
-            fileOut.write(buf);
+        // Read until the end of the file (fileIn) and write
+        while((len = fileIn.read(buffer)) != -1){
+            fileOut.write(buffer);
         }
 
-        //ファイルに内容を書き込む
+        //write to the file (fileOut)
         fileOut.flush();
 
-        //ファイルの終了処理
         fileOut.close();
         fileIn.close();
+    }
+
+    public void addColumnTitles(String[] columnTitles) {
+        //Need to add "id" too!
+        String sqlAdd = "INSERT INTO titles (filmId, original_title, year, director, second_title, country, file_path) VALUES(?,?,?,?,?,?,?)";
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sqlAdd))
+        {
+            //add "id"
+            pstmt.setString(1, "id");
+
+            int index = 2;
+            for (String column : columnTitles) {
+                pstmt.setString(index++, column);
+            }
+
+            pstmt.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public String[] getColumnTitles(){
+        String[] columnTitles = new String[7];
+        String sql = "SELECT * FROM titles";
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            ResultSet rs = pstmt.executeQuery();
+
+            columnTitles[0] = rs.getString("filmID");
+            columnTitles[1] = rs.getString("original_title");
+            columnTitles[2] = rs.getString("year");
+            columnTitles[3] = rs.getString("director");
+            columnTitles[4] = rs.getString("second_title");
+            columnTitles[5] = rs.getString("country");
+            columnTitles[6] = rs.getString("file_path");
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Vous avez besoin de charger un fichier CSV !");
+        }
+
+        return columnTitles;
     }
 
     public void addOneFilm(String originalTitle, String year, String director, String secondTitle, String country, String filePath) {
@@ -99,8 +169,6 @@ public class SQLiteHelper {
             pstmt.setString(5, country);
             pstmt.setString(6, filePath);
             pstmt.executeUpdate();
-
-            conn.close();
         }
         catch (SQLException e)
         {
@@ -125,7 +193,23 @@ public class SQLiteHelper {
         }
     }
 
-    public void modifyOneFilm(String filmIdSelected, String originalTitle, String year, String director, String secondTitle, String country, String filePath){
+    public void clearUpTable(){
+        String sqlUpdate = "DELETE FROM films";
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sqlUpdate))
+        {
+            // update
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void modifyOneFilm(String filmIdSelected, String originalTitle, String year,
+                              String director, String secondTitle,
+                              String country, String filePath){
         String sqlUpdate = "UPDATE films SET original_title = ?";
 
         List<String> parameters = new ArrayList<>();
@@ -205,7 +289,7 @@ public class SQLiteHelper {
 
     public void searchByTitle(String titleOrSecondTitle, String year, String director, String country){
 
-        listFilms listFilms = new listFilms("Liste des films cherchés");
+        listFilms listFilms = new listFilms("Liste des films cherchés", getColumnTitles());
         listFilms.pack();
         listFilms.setVisible(true);
 

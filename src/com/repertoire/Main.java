@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class Main extends JFrame implements ActionListener {
-    private JButton btnSearch, btnInsert;
+    private JButton btnSearch, btnInsert, btnRead;
     private JFrame window;
     private JMenu menuSearch, menuInsert;
     private JPanel panel;
@@ -20,6 +20,7 @@ public class Main extends JFrame implements ActionListener {
                     SQLite = new SQLiteHelper(dbName);
                     SQLite.createNewDB();
                     SQLite.createNewTable();
+                    SQLite.createNewTableForColumnTitles();
                     //backup the database
                     try {
                         SQLite.backUpDB();
@@ -27,18 +28,11 @@ public class Main extends JFrame implements ActionListener {
                         e.printStackTrace();
                     }
 
-                    //read the file
-                    /*try {
-                        readFile();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
-
                     JFrame frameFilms = new JFrame("Répertoire de films");
                     frameFilms.setContentPane(new Main().panel);
                     frameFilms.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     frameFilms.setLocationRelativeTo(null);
-                    frameFilms.setPreferredSize(new Dimension(300, 80));
+                    frameFilms.setPreferredSize(new Dimension(400, 80));
                     frameFilms.pack();
                     frameFilms.setVisible(true);
                 });
@@ -56,6 +50,7 @@ public class Main extends JFrame implements ActionListener {
 
         btnSearch.addActionListener(this);
         btnInsert.addActionListener(this);
+        btnRead.addActionListener(this);
     }
 
     @Override
@@ -65,6 +60,28 @@ public class Main extends JFrame implements ActionListener {
         }
         else if (e.getSource() == btnInsert){
             WindowInsert windowInsert = new WindowInsert();
+        }
+        else if (e.getSource() == btnRead){
+            int dialogReadCsv = JOptionPane.showConfirmDialog(null,
+                    "Voulez-vous charger de nouvelles données d'un fichier CSV ?",
+                    "De nouvelles données",
+                    JOptionPane.YES_NO_OPTION);
+            //Yes
+            if (dialogReadCsv == 0){
+                SQLite.clearUpTable();
+                Read load = new Read();
+                //read a csv file
+                try {
+                    load.readCsvFile();
+                    String[] titles = load.getColumnTitles();
+                    SQLite.addColumnTitles(titles);
+                } catch (IOException ie) {
+                    ie.printStackTrace();
+                }
+            }//END if
+            else{
+                JOptionPane.showMessageDialog(null, "Le chargement n'a pas été fait.");
+            }
         }
     }
 }

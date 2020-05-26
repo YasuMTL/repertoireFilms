@@ -347,24 +347,24 @@ public class SQLiteHelper {
             // set the value
             if (parameters.contains("title")){
                 //For title
-                pstmt.setString(++columnIndex, "%" + titleOrSecondTitle + "%");
+                pstmt.setString(++columnIndex, "%" + titleOrSecondTitle.trim() + "%");
                 //For second_title
-                pstmt.setString(++columnIndex, "%" + titleOrSecondTitle + "%");
+                pstmt.setString(++columnIndex, "%" + titleOrSecondTitle.trim() + "%");
                 System.out.println("titleOrSecondTitle = " + titleOrSecondTitle);
             }
 
             if (parameters.contains("year")){
-                pstmt.setString(++columnIndex, "%" + year + "%");
+                pstmt.setString(++columnIndex, "%" + year.trim() + "%");
                 System.out.println("year = " + year);
             }
 
             if (parameters.contains("director")){
-                pstmt.setString(++columnIndex, "%" + director + "%");
+                pstmt.setString(++columnIndex, "%" + director.trim() + "%");
                 System.out.println("director = " + director);
             }
 
             if (parameters.contains("country")){
-                pstmt.setString(++columnIndex, "%" + country + "%");
+                pstmt.setString(++columnIndex, "%" + country.trim() + "%");
                 System.out.println("country = " + country);
             }
 

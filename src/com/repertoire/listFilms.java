@@ -193,38 +193,57 @@ public class listFilms extends JFrame implements ActionListener {
         }
         else if(e.getSource() == buttonModify)
         {
-            SQLiteHelper sql = new SQLiteHelper(dbName);
+            int dialogModifyFilm = JOptionPane.showConfirmDialog(null,
+                    "Voulez-vous modifier ce film ?",
+                    "Modification du film",
+                    JOptionPane.YES_NO_OPTION);
+            //Yes
+            if (dialogModifyFilm == 0){
+                SQLiteHelper sql = new SQLiteHelper(dbName);
 
-            String newTitle = textFieldTitle.getText(),
-                    newYear = textFieldYear.getText(),
-                    newDirector = textFieldDirector.getText(),
-                    newSecondTitle = textFieldSecondTitle.getText(),
-                    newCountry = textFieldCountry.getText(),
-                    newFilmPath = textFieldFilmPath.getText();
+                String newTitle = textFieldTitle.getText(),
+                        newYear = textFieldYear.getText(),
+                        newDirector = textFieldDirector.getText(),
+                        newSecondTitle = textFieldSecondTitle.getText(),
+                        newCountry = textFieldCountry.getText(),
+                        newFilmPath = textFieldFilmPath.getText();
 
-            sql.modifyOneFilm(filmIdSelected,
-                    newTitle,
-                    newYear,
-                    newDirector,
-                    newSecondTitle,
-                    newCountry,
-                    newFilmPath);
+                sql.modifyOneFilm(filmIdSelected,
+                        newTitle,
+                        newYear,
+                        newDirector,
+                        newSecondTitle,
+                        newCountry,
+                        newFilmPath);
 
-            model.setValueAt(newTitle, jTableListFilms.getSelectedRow(), 1);
-            model.setValueAt(newYear, jTableListFilms.getSelectedRow(), 2);
-            model.setValueAt(newDirector, jTableListFilms.getSelectedRow(), 3);
-            model.setValueAt(newSecondTitle, jTableListFilms.getSelectedRow(), 4);
-            model.setValueAt(newCountry, jTableListFilms.getSelectedRow(), 5);
-            model.setValueAt(newFilmPath, jTableListFilms.getSelectedRow(), 6);
+                model.setValueAt(newTitle, jTableListFilms.getSelectedRow(), 1);
+                model.setValueAt(newYear, jTableListFilms.getSelectedRow(), 2);
+                model.setValueAt(newDirector, jTableListFilms.getSelectedRow(), 3);
+                model.setValueAt(newSecondTitle, jTableListFilms.getSelectedRow(), 4);
+                model.setValueAt(newCountry, jTableListFilms.getSelectedRow(), 5);
+                model.setValueAt(newFilmPath, jTableListFilms.getSelectedRow(), 6);
 
-            JOptionPane.showMessageDialog(this, "La mise à jour a été faite !");
+                JOptionPane.showMessageDialog(this, "La mise à jour a été faite !");
+            }else{
+                JOptionPane.showMessageDialog(this, "La modification a été annulée !");
+            }
         }
         else if (e.getSource() == buttonRemove)
         {
-            SQLiteHelper sql = new SQLiteHelper(dbName);
-            sql.removeOneFilm(filmIdSelected);
-            JOptionPane.showMessageDialog(this, "La supression a été faite !");
-            dispose();
+            int dialogRemoveFilm = JOptionPane.showConfirmDialog(null,
+                    "Voulez-vous supprimer ce film ?",
+                    "Supression du film",
+                    JOptionPane.YES_NO_OPTION);
+            //Yes
+            if (dialogRemoveFilm == 0){
+                SQLiteHelper sql = new SQLiteHelper(dbName);
+                sql.removeOneFilm(filmIdSelected);
+                JOptionPane.showMessageDialog(this, "La supression a été faite !");
+
+                dispose();
+            }else{
+                JOptionPane.showMessageDialog(this, "La supression a été annulée !");
+            }
         }
     }
 

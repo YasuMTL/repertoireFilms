@@ -115,10 +115,7 @@ public class SQLiteHelper {
         try (Connection conn = this.connect();
              PreparedStatement pstmt = conn.prepareStatement(sqlAdd))
         {
-            //add "id"
-            pstmt.setString(1, "id");
-
-            int index = 2;
+            int index = 1;
             for (String column : columnTitles) {
                 pstmt.setString(index++, column);
             }

@@ -24,7 +24,7 @@ public class ReadCSV {
             lineNumber = 0;
         columnTitles = null;
         File selectedFile;
-        BufferedReader entryFile;
+        BufferedReader entryFile = null;
 
         if (result == JFileChooser.APPROVE_OPTION) {
             selectedFile = jFileChooser.getSelectedFile();
@@ -33,47 +33,69 @@ public class ReadCSV {
             entryFile = new BufferedReader(
                     new FileReader(selectedFile)
             );
-        }else{
-            entryFile = null;
         }
+
+        System.out.println("entryFile: " + entryFile);
+        //String[] columns;
 
         // reading the first line of the file
         try {
-            line = entryFile.readLine();
+            //line = entryFile.readLine();
 
-            while (line != null){
+            while ((line = entryFile.readLine()) != null){
+
+                //debug
+                /*if (tests.length > 1){
+                    for(String test: tests){
+                        System.out.println(test);
+                    }
+                    System.out.println("counter = " + counter++);
+                }
+                else{
+                    System.out.println("array of tests is seemingly empty");
+                }*/
+
                 if (lineNumber == 0){
-                    //How to pass these values to setColumnTitles() of listFilms.java ?
                     columnTitles = line.split(";");
+                    //columnTitles = line.split(",");
+                    //System.out.println("columnTitles:");
+
+                    /*for (String column: columnTitles) {
+                        System.out.println("* " + column);
+                    }*/
                 }else{
                     String[] columns = line.split(";");
+                    //String[] columns = line.split(",");
+
                     //System.out.println("columns.length = " + columns.length);
+                    if (columns.length > 1){
 
-                    originalTitle = columns[0];
+                        originalTitle = columns[1];
+                        if (columns[2].isEmpty()) {
+                            year = "9999";
+                        }else {
+                            year = columns[2];
+                        }
 
-                    if (columns[1].isEmpty()) {
-                        year = "9999";
-                    }else {
-                        year = columns[1];
+                        director = columns[3];
+                        secondTitle = columns[4];
+                        country = columns[5];
+
+                        if (columns.length == 6){
+                            filePath = null;
+                        }else{
+                            filePath = columns[6];
+                        }
+
+                        //Debug
+                        //System.out.println(originalTitle + ", " + year + ", " + director + ", " + secondTitle + ", " + country + ", " + filePath);
+
+                        SQLite.addOneFilm(originalTitle, year, director, secondTitle, country, filePath);
                     }
-
-                    director = columns[2];
-                    secondTitle = columns[3];
-                    country = columns[4];
-
-                    if (columns.length == 5){
-                        filePath = null;
-                    }else{
-                        filePath = columns[5];
-                    }
-
-                    //Debug
-                    //System.out.println(originalTitle + ", " + year + ", " + director + ", " + secondTitle + ", " + country + ", " + filePath);
-
-                    SQLite.addOneFilm(originalTitle, year, director, secondTitle, country, filePath);
                 }
 
-                line = entryFile.readLine();
+                //line = entryFile.readLine();
+                System.out.println("lineNumber = " + lineNumber);
                 lineNumber++;
             }//END of while
 

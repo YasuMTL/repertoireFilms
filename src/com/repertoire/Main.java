@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class Main extends JFrame implements ActionListener {
-    private JButton btnSearch, btnInsert, btnRead;
+    private JButton btnSearch, btnInsert, btnImport, btnExport;
     private JFrame window;
     private JMenu menuSearch, menuInsert;
     private JPanel panel;
@@ -32,7 +32,7 @@ public class Main extends JFrame implements ActionListener {
                     frameFilms.setContentPane(new Main().panel);
                     frameFilms.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     frameFilms.setLocationRelativeTo(null);
-                    frameFilms.setPreferredSize(new Dimension(400, 80));
+                    frameFilms.setPreferredSize(new Dimension(450, 80));
                     frameFilms.pack();
                     frameFilms.setVisible(true);
                 });
@@ -50,7 +50,8 @@ public class Main extends JFrame implements ActionListener {
 
         btnSearch.addActionListener(this);
         btnInsert.addActionListener(this);
-        btnRead.addActionListener(this);
+        btnImport.addActionListener(this);
+        btnExport.addActionListener(this);
     }
 
     @Override
@@ -61,19 +62,19 @@ public class Main extends JFrame implements ActionListener {
         else if (e.getSource() == btnInsert){
             WindowInsert windowInsert = new WindowInsert();
         }
-        else if (e.getSource() == btnRead){
+        else if (e.getSource() == btnImport){
             int dialogReadCsv = JOptionPane.showConfirmDialog(null,
                     "Voulez-vous charger de nouvelles données d'un fichier CSV ?",
-                    "De nouvelles données",
+                    "Importer un fichier CSV",
                     JOptionPane.YES_NO_OPTION);
             //Yes
             if (dialogReadCsv == 0){
                 SQLite.clearUpTable();
-                Read load = new Read();
+                ReadCSV importCsv = new ReadCSV();
                 //read a csv file
                 try {
-                    load.readCsvFile();
-                    String[] titles = load.getColumnTitles();
+                    importCsv.readCsvFile();
+                    String[] titles = importCsv.getColumnTitles();
                     SQLite.addColumnTitles(titles);
                 } catch (IOException ie) {
                     ie.printStackTrace();
@@ -81,6 +82,20 @@ public class Main extends JFrame implements ActionListener {
             }//END if
             else{
                 JOptionPane.showMessageDialog(null, "Le chargement n'a pas été fait.");
+            }
+        }
+        else if (e.getSource() == btnExport){
+            int dialogExportCsv = JOptionPane.showConfirmDialog(null,
+                    "Voulez-vous exporter un fichier CSV ?",
+                    "Exporter un fichier CSV",
+                    JOptionPane.YES_NO_OPTION);
+            //Yes
+            if (dialogExportCsv == 0){
+                WriteCSV exportCsv = new WriteCSV();
+                exportCsv.exportCSV(SQLite.getColumnTitles(), SQLite.getAllLines());
+            }//END if
+            else{
+                JOptionPane.showMessageDialog(null, "L'exportation n'a pas été faite.");
             }
         }
     }

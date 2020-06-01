@@ -19,10 +19,16 @@
           <text value="Ajouter"/>
         </properties>
       </component>
-      <component id="610f2" class="javax.swing.JButton" binding="btnRead">
+      <component id="610f2" class="javax.swing.JButton" binding="btnImport">
         <constraints/>
         <properties>
-          <text value="Charger des données"/>
+          <text value="Importer CSV"/>
+        </properties>
+      </component>
+      <component id="64d98" class="javax.swing.JButton" binding="btnExport">
+        <constraints/>
+        <properties>
+          <text value="Exporter CSV"/>
         </properties>
       </component>
     </children>

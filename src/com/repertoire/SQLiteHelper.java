@@ -232,29 +232,39 @@ public class SQLiteHelper {
 
         List<String> parameters = new ArrayList<>();
 
+        sqlUpdate += ", year = ? ";
         if (!year.equals("")){
-            sqlUpdate += ", year = ? ";
             parameters.add("year");
+        }else{
+            parameters.add("yearEmpty");
         }
 
+        sqlUpdate += ", director = ? ";
         if (!director.equals("")){
-            sqlUpdate += ", director = ? ";
             parameters.add("director");
+        }else{
+            parameters.add("directorEmpty");
         }
 
+        sqlUpdate += ", second_title = ? ";
         if (!secondTitle.equals("")){
-            sqlUpdate += ", second_title = ? ";
             parameters.add("secondTitle");
+        }else{
+            parameters.add("secondTitleEmpty");
         }
 
+        sqlUpdate += ", country = ? ";
         if (!country.equals("")){
-            sqlUpdate += ", country = ? ";
             parameters.add("country");
+        }else{
+            parameters.add("countryEmpty");
         }
 
+        sqlUpdate += ", file_path = ? ";
         if (!filePath.equals("")){
-            sqlUpdate += ", file_path = ? ";
             parameters.add("filePath");
+        }else{
+            parameters.add("filePathEmpty");
         }
 
         sqlUpdate += " WHERE filmID = ? ";
@@ -266,32 +276,47 @@ public class SQLiteHelper {
             int columnIndex = 1;
 
             // set the value
-            pstmt.setString(1, originalTitle);
+            pstmt.setString(columnIndex, originalTitle);
             System.out.println("originalTitle = " + originalTitle);
 
             if (parameters.contains("year")){
                 pstmt.setString(++columnIndex, year);
                 System.out.println("year = " + year);
+            }else if (parameters.contains("yearEmpty")){
+                pstmt.setString(++columnIndex, "");
+                System.out.println("year = \" \"");
             }
 
             if (parameters.contains("director")){
                 pstmt.setString(++columnIndex, director);
                 System.out.println("director = " + director);
+            }else if (parameters.contains("directorEmpty")){
+                pstmt.setString(++columnIndex, "");
+                System.out.println("director = \" \"");
             }
 
             if (parameters.contains("secondTitle")){
                 pstmt.setString(++columnIndex, secondTitle);
                 System.out.println("secondTitle = " + secondTitle);
+            }else if (parameters.contains("secondTitleEmpty")){
+                pstmt.setString(++columnIndex, "");
+                System.out.println("secondTitle = \" \"");
             }
 
             if (parameters.contains("country")){
                 pstmt.setString(++columnIndex, country);
                 System.out.println("country = " + country);
+            }else if (parameters.contains("countryEmpty")){
+                pstmt.setString(++columnIndex, "");
+                System.out.println("countryEmpty = \" \"");
             }
 
             if (parameters.contains("filePath")){
                 pstmt.setString(++columnIndex, filePath);
                 System.out.println("filePath = " + filePath);
+            }else if (parameters.contains("filePathEmpty")){
+                pstmt.setString(++columnIndex, "");
+                System.out.println("filePath = \" \"");
             }
 
             pstmt.setInt(++columnIndex, Integer.parseInt(filmIdSelected));
@@ -415,5 +440,23 @@ public class SQLiteHelper {
         }
 
         return allLines;
+    }
+
+    public void modifyAllFilePath(){
+        String sqlUpdate = "UPDATE films SET file_path = ?";
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sqlUpdate))
+        {
+            // set the value
+            //pstmt.setString(1, originalTitle);
+            //System.out.println("originalTitle = " + originalTitle);
+
+            // update
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

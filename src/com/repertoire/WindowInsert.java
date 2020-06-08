@@ -14,13 +14,15 @@ public class WindowInsert extends JFrame implements ActionListener {
             labelDirector,
             labelSecondTitle,
             labelCountry,
-            labelFilmPath;
+            labelFilmPath,
+            labelMemo;
     private JTextField fieldTitle,
             fieldYear,
             fieldDirector,
             fieldSecondTitle,
             fieldCountry,
-            fieldFilmPath;
+            fieldFilmPath,
+            fieldMemo;
     private JButton buttonFinish, buttonAdd, buttonRemoveAll;
     private Container container;
 
@@ -35,6 +37,7 @@ public class WindowInsert extends JFrame implements ActionListener {
         createSecondTitleLabelField();
         createCountryLabelField();
         createFilmPathLabelField();
+        createMemoLabelField();
 
         createButtonEnd();
         createButtonAdd();
@@ -55,7 +58,8 @@ public class WindowInsert extends JFrame implements ActionListener {
                     fieldDirector.getText(),
                     fieldSecondTitle.getText(),
                     fieldCountry.getText(),
-                    fieldFilmPath.getText());
+                    fieldFilmPath.getText(),
+                    fieldMemo.getText());
             JOptionPane.showMessageDialog(null, "Un film a été ajouté !");
             removeAllField();
         }
@@ -89,6 +93,14 @@ public class WindowInsert extends JFrame implements ActionListener {
         buttonFinish = new JButton("Terminer");
         buttonFinish.addActionListener(this);
         container.add(buttonFinish);
+    }
+
+    private void createMemoLabelField(){
+        labelMemo = new JLabel("Note : ", SwingConstants.RIGHT);
+        fieldMemo = new JTextField();
+        fieldMemo.addActionListener(this);
+        container.add(labelMemo);
+        container.add(fieldMemo);
     }
 
     private void createFilmPathLabelField(){

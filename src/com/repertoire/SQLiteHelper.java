@@ -55,6 +55,7 @@ public class SQLiteHelper {
                 + "	second_title text,\n"
                 + "	country text NOT NULL,\n"
                 + "	file_path text,\n"
+                + "	memo text,\n"
                 + "	capacity real\n"
                 + ");";
 
@@ -77,6 +78,7 @@ public class SQLiteHelper {
                 + "	second_title text NOT NULL,\n"
                 + "	country text NOT NULL,\n"
                 + "	file_path text NOT NULL,\n"
+                + "	memo text NOT NULL,\n"
                 + "	capacity real\n"
                 + ");";
 
@@ -110,7 +112,7 @@ public class SQLiteHelper {
 
     public void addColumnTitles(String[] columnTitles) {
         //Need to add "id" too!
-        String sqlAdd = "INSERT INTO titles (filmId, original_title, year, director, second_title, country, file_path) VALUES(?,?,?,?,?,?,?)";
+        String sqlAdd = "INSERT INTO titles (filmId, original_title, year, director, second_title, country, file_path, memo) VALUES(?,?,?,?,?,?,?,?)";
 
         try (Connection conn = this.connect();
              PreparedStatement pstmt = conn.prepareStatement(sqlAdd))
@@ -129,7 +131,7 @@ public class SQLiteHelper {
     }
 
     public String[] getColumnTitles(){
-        String[] columnTitles = new String[7];
+        String[] columnTitles = new String[8];
         String sql = "SELECT * FROM titles";
 
         try (Connection conn = this.connect();
@@ -143,6 +145,7 @@ public class SQLiteHelper {
             columnTitles[4] = rs.getString("second_title");
             columnTitles[5] = rs.getString("country");
             columnTitles[6] = rs.getString("file_path");
+            columnTitles[7] = rs.getString("memo");
 
 
         }catch (SQLException e){
@@ -174,8 +177,8 @@ public class SQLiteHelper {
         return numLines;
     }
 
-    public void addOneFilm(String originalTitle, String year, String director, String secondTitle, String country, String filePath) {
-        String sqlAdd = "INSERT INTO films (original_title, year, director, second_title, country, file_path) VALUES(?,?,?,?,?,?)";
+    public void addOneFilm(String originalTitle, String year, String director, String secondTitle, String country, String filePath, String memo) {
+        String sqlAdd = "INSERT INTO films (original_title, year, director, second_title, country, file_path, memo) VALUES(?,?,?,?,?,?,?)";
 
         try (Connection conn = this.connect();
              PreparedStatement pstmt = conn.prepareStatement(sqlAdd))
@@ -186,6 +189,7 @@ public class SQLiteHelper {
             pstmt.setString(4, secondTitle);
             pstmt.setString(5, country);
             pstmt.setString(6, filePath);
+            pstmt.setString(7, memo);
             pstmt.executeUpdate();
         }
         catch (SQLException e)
@@ -227,7 +231,7 @@ public class SQLiteHelper {
 
     public void modifyOneFilm(String filmIdSelected, String originalTitle, String year,
                               String director, String secondTitle,
-                              String country, String filePath){
+                              String country, String filePath, String memo){
         String sqlUpdate = "UPDATE films SET original_title = ?";
 
         List<String> parameters = new ArrayList<>();
@@ -265,6 +269,13 @@ public class SQLiteHelper {
             parameters.add("filePath");
         }else{
             parameters.add("filePathEmpty");
+        }
+
+        sqlUpdate += ", memo = ? ";
+        if (!filePath.equals("")){
+            parameters.add("memo");
+        }else{
+            parameters.add("memoEmpty");
         }
 
         sqlUpdate += " WHERE filmID = ? ";
@@ -317,6 +328,14 @@ public class SQLiteHelper {
             }else if (parameters.contains("filePathEmpty")){
                 pstmt.setString(++columnIndex, "");
                 System.out.println("filePath = \" \"");
+            }
+
+            if (parameters.contains("memo")){
+                pstmt.setString(++columnIndex, memo);
+                System.out.println("memo = " + memo);
+            }else if (parameters.contains("memoEmpty")){
+                pstmt.setString(++columnIndex, "");
+                System.out.println("memo = \" \"");
             }
 
             pstmt.setInt(++columnIndex, Integer.parseInt(filmIdSelected));
@@ -400,7 +419,8 @@ public class SQLiteHelper {
                         rs.getString("director"),
                         rs.getString("second_title"),
                         rs.getString("country"),
-                        rs.getString("file_path"));
+                        rs.getString("file_path"),
+                        rs.getString("memo"));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -431,6 +451,7 @@ public class SQLiteHelper {
                 allLines[linePosition][columnPosition++] = rs.getString("second_title");
                 allLines[linePosition][columnPosition++] = rs.getString("country");
                 allLines[linePosition][columnPosition++] = rs.getString("file_path");
+                allLines[linePosition][columnPosition++] = rs.getString("memo");
 
                 linePosition++;
                 System.out.println(linePosition);

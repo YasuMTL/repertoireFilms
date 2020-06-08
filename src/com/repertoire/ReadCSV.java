@@ -15,7 +15,7 @@ public class ReadCSV {
     ReadCSV(){}
 
     void readCsvFile() throws IOException {
-        String line, originalTitle, year, director, secondTitle, country, filePath;
+        String line, originalTitle, year, director, secondTitle, country, filePath, memo;
         //Choose a csv file
         JFileChooser jFileChooser = new JFileChooser();
         jFileChooser.setCurrentDirectory(new File("E:\\Films Alexe\\Répertoire\\"));
@@ -81,16 +81,24 @@ public class ReadCSV {
                         secondTitle = columns[4];
                         country = columns[5];
 
-                        if (columns.length == 6){
+                        /*if (columns.length == 6){
                             filePath = null;
                         }else{
                             filePath = columns[6];
+                        }*/
+
+                        filePath = columns[6];
+
+                        if (columns.length == 7){
+                            memo = "";
+                        }else{
+                            memo = columns[7];
                         }
 
                         //Debug
                         //System.out.println(originalTitle + ", " + year + ", " + director + ", " + secondTitle + ", " + country + ", " + filePath);
 
-                        SQLite.addOneFilm(originalTitle, year, director, secondTitle, country, filePath);
+                        SQLite.addOneFilm(originalTitle, year, director, secondTitle, country, filePath, memo);
                     }
                 }
 

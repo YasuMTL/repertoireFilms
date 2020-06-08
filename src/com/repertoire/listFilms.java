@@ -35,8 +35,11 @@ public class listFilms extends JFrame implements ActionListener {
     private JTextField textFieldSecondTitle;
     private JTextField textFieldCountry;
     private JTextField textFieldFilmPath;
+    private JTextField textFieldMemo;
 
     private JScrollPane scrollPane;
+
+    private JLabel labelMemo;
     private final DefaultTableModel model;
 
     private String filmIdSelected;
@@ -70,7 +73,7 @@ public class listFilms extends JFrame implements ActionListener {
         }
     }
 
-    public void refreshListFilms(String filmID, String title, String year, String director, String secondTitle, String country, String filmPath){
+    public void refreshListFilms(String filmID, String title, String year, String director, String secondTitle, String country, String filmPath, String memo){
         model.addRow(new Object[]{
                 filmID,
                 title,
@@ -78,7 +81,8 @@ public class listFilms extends JFrame implements ActionListener {
                 director,
                 secondTitle,
                 country,
-                filmPath}
+                filmPath,
+                memo}
         );
     }
 
@@ -99,7 +103,8 @@ public class listFilms extends JFrame implements ActionListener {
                         director = (String)jTableListFilms.getModel().getValueAt(row, 3),
                         secondTitle = (String)jTableListFilms.getModel().getValueAt(row, 4),
                         country = (String)jTableListFilms.getModel().getValueAt(row, 5),
-                        filmPath = (String)jTableListFilms.getModel().getValueAt(row, 6);
+                        filmPath = (String)jTableListFilms.getModel().getValueAt(row, 6),
+                        memo = (String)jTableListFilms.getModel().getValueAt(row, 7);
 
                 textFieldTitle.setText(title);
                 textFieldYear.setText(year);
@@ -107,6 +112,7 @@ public class listFilms extends JFrame implements ActionListener {
                 textFieldSecondTitle.setText(secondTitle);
                 textFieldCountry.setText(country);
                 textFieldFilmPath.setText(filmPath);
+                textFieldMemo.setText(memo);
 
                 if (col == 6){
                     //get the film's path
@@ -190,6 +196,7 @@ public class listFilms extends JFrame implements ActionListener {
             textFieldSecondTitle.setText("");
             textFieldCountry.setText("");
             textFieldFilmPath.setText("");
+            textFieldMemo.setText("");
         }
         else if(e.getSource() == buttonModify)
         {
@@ -206,7 +213,8 @@ public class listFilms extends JFrame implements ActionListener {
                         newDirector = textFieldDirector.getText(),
                         newSecondTitle = textFieldSecondTitle.getText(),
                         newCountry = textFieldCountry.getText(),
-                        newFilmPath = textFieldFilmPath.getText();
+                        newFilmPath = textFieldFilmPath.getText(),
+                        newMemo = textFieldMemo.getText();
 
                 sql.modifyOneFilm(filmIdSelected,
                         newTitle,
@@ -214,7 +222,8 @@ public class listFilms extends JFrame implements ActionListener {
                         newDirector,
                         newSecondTitle,
                         newCountry,
-                        newFilmPath);
+                        newFilmPath,
+                        newMemo);
 
                 model.setValueAt(newTitle, jTableListFilms.getSelectedRow(), 1);
                 model.setValueAt(newYear, jTableListFilms.getSelectedRow(), 2);
@@ -222,6 +231,7 @@ public class listFilms extends JFrame implements ActionListener {
                 model.setValueAt(newSecondTitle, jTableListFilms.getSelectedRow(), 4);
                 model.setValueAt(newCountry, jTableListFilms.getSelectedRow(), 5);
                 model.setValueAt(newFilmPath, jTableListFilms.getSelectedRow(), 6);
+                model.setValueAt(newMemo, jTableListFilms.getSelectedRow(), 7);
 
                 JOptionPane.showMessageDialog(this, "La mise à jour a été faite !");
             }else{

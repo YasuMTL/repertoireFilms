@@ -119,7 +119,7 @@ public class listFilms extends JFrame implements ActionListener {
                     String url = (String) jTableListFilms.getModel().getValueAt(row, col);
                     System.out.println(url + " was clicked");
 
-                    // DO here what you want to do with your url
+                    // Do here what you want to do with your url
                     int input = JOptionPane.showConfirmDialog(null,
                             "Voulez-vous copier ce film ?",
                             "Copier le film",
@@ -130,6 +130,7 @@ public class listFilms extends JFrame implements ActionListener {
                         //get the directory's path
                         JFileChooser fileChooser = new JFileChooser();
                         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
                         //Default: the USB key's path
                         fileChooser.setCurrentDirectory(new File("H:\\"));
                         int option = fileChooser.showOpenDialog(new JFrame());
@@ -138,11 +139,13 @@ public class listFilms extends JFrame implements ActionListener {
                         if(option == JFileChooser.APPROVE_OPTION){
                             File file = fileChooser.getSelectedFile();
                             System.out.println("Folder Selected: " + file.getAbsolutePath());
+
                             //Dialog to confirm if you wish to proceed the copy
                             int dialogCopyFilm = JOptionPane.showConfirmDialog(null,
                                     "Voulez-vous faire la copie suivante ?\n" + url + "\n--> " + file.getAbsolutePath(),
                                     "Copier le film",
                                     JOptionPane.YES_NO_OPTION);
+
                             //Yes
                             if (dialogCopyFilm == 0){
                                 try
@@ -200,43 +203,32 @@ public class listFilms extends JFrame implements ActionListener {
         }
         else if(e.getSource() == buttonModify)
         {
-            int dialogModifyFilm = JOptionPane.showConfirmDialog(null,
-                    "Voulez-vous modifier ce film ?",
-                    "Modification du film",
-                    JOptionPane.YES_NO_OPTION);
-            //Yes
-            if (dialogModifyFilm == 0){
-                SQLiteHelper sql = new SQLiteHelper(dbName);
+            SQLiteHelper sql = new SQLiteHelper(dbName);
 
-                String newTitle = textFieldTitle.getText(),
-                        newYear = textFieldYear.getText(),
-                        newDirector = textFieldDirector.getText(),
-                        newSecondTitle = textFieldSecondTitle.getText(),
-                        newCountry = textFieldCountry.getText(),
-                        newFilmPath = textFieldFilmPath.getText(),
-                        newMemo = textFieldMemo.getText();
+            String newTitle = textFieldTitle.getText(),
+                    newYear = textFieldYear.getText(),
+                    newDirector = textFieldDirector.getText(),
+                    newSecondTitle = textFieldSecondTitle.getText(),
+                    newCountry = textFieldCountry.getText(),
+                    newFilmPath = textFieldFilmPath.getText(),
+                    newMemo = textFieldMemo.getText();
 
-                sql.modifyOneFilm(filmIdSelected,
-                        newTitle,
-                        newYear,
-                        newDirector,
-                        newSecondTitle,
-                        newCountry,
-                        newFilmPath,
-                        newMemo);
+            sql.modifyOneFilm(filmIdSelected,
+                    newTitle,
+                    newYear,
+                    newDirector,
+                    newSecondTitle,
+                    newCountry,
+                    newFilmPath,
+                    newMemo);
 
-                model.setValueAt(newTitle, jTableListFilms.getSelectedRow(), 1);
-                model.setValueAt(newYear, jTableListFilms.getSelectedRow(), 2);
-                model.setValueAt(newDirector, jTableListFilms.getSelectedRow(), 3);
-                model.setValueAt(newSecondTitle, jTableListFilms.getSelectedRow(), 4);
-                model.setValueAt(newCountry, jTableListFilms.getSelectedRow(), 5);
-                model.setValueAt(newFilmPath, jTableListFilms.getSelectedRow(), 6);
-                model.setValueAt(newMemo, jTableListFilms.getSelectedRow(), 7);
-
-                JOptionPane.showMessageDialog(this, "La mise à jour a été faite !");
-            }else{
-                JOptionPane.showMessageDialog(this, "La modification a été annulée !");
-            }
+            model.setValueAt(newTitle, jTableListFilms.getSelectedRow(), 1);
+            model.setValueAt(newYear, jTableListFilms.getSelectedRow(), 2);
+            model.setValueAt(newDirector, jTableListFilms.getSelectedRow(), 3);
+            model.setValueAt(newSecondTitle, jTableListFilms.getSelectedRow(), 4);
+            model.setValueAt(newCountry, jTableListFilms.getSelectedRow(), 5);
+            model.setValueAt(newFilmPath, jTableListFilms.getSelectedRow(), 6);
+            model.setValueAt(newMemo, jTableListFilms.getSelectedRow(), 7);
         }
         else if (e.getSource() == buttonRemove)
         {

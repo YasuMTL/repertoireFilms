@@ -36,12 +36,9 @@ public class ReadCSV {
         }
 
         System.out.println("entryFile: " + entryFile);
-        //String[] columns;
 
         // reading the first line of the file
         try {
-            //line = entryFile.readLine();
-
             while ((line = entryFile.readLine()) != null){
 
                 //debug
@@ -57,17 +54,9 @@ public class ReadCSV {
 
                 if (lineNumber == 0){
                     columnTitles = line.split(";");
-                    //columnTitles = line.split(",");
-                    //System.out.println("columnTitles:");
-
-                    /*for (String column: columnTitles) {
-                        System.out.println("* " + column);
-                    }*/
                 }else{
                     String[] columns = line.split(";");
-                    //String[] columns = line.split(",");
 
-                    //System.out.println("columns.length = " + columns.length);
                     if (columns.length > 1){
 
                         originalTitle = columns[1];
@@ -80,12 +69,6 @@ public class ReadCSV {
                         director = columns[3];
                         secondTitle = columns[4];
                         country = columns[5];
-
-                        /*if (columns.length == 6){
-                            filePath = null;
-                        }else{
-                            filePath = columns[6];
-                        }*/
 
                         filePath = columns[6];
 
@@ -102,7 +85,6 @@ public class ReadCSV {
                     }
                 }
 
-                //line = entryFile.readLine();
                 System.out.println("lineNumber = " + lineNumber);
                 lineNumber++;
             }//END of while
